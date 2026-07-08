@@ -1,0 +1,5 @@
+rail,nominal_v,max_current_a,protection,notes
+actuator_bus,48,20,main fuse + contactor,bench value only
+sensor_bus,12,5,blade fuse + isolated dcdc,cameras/fans
+logic_bus,5,5,polyfuse + isolated dcdc,mcu/peripherals
+pump_bus,12,2,dedicated fuse + leak interlock,service module disabled default

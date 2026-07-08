@@ -1,0 +1,31 @@
+feature_flags:
+  autonomous_locomotion: false
+  human_contact_mode: false
+  voice_local_assistant: true
+  cloud_connectivity: false
+  legal_support_contact_router: false
+  idle_hygiene_cycle: false
+  beverage_service_module: false
+  docking_autonomy: false
+  lerobot_data_capture: true
+  perception_recording: false
+required_interlocks:
+  idle_hygiene_cycle:
+  - sealed_dock
+  - no_person_present
+  - uvc_interlock
+  - leak_sensor_ok
+  beverage_service_module:
+  - food_grade_tubing
+  - leak_sensor_ok
+  - pump_current_ok
+  - manual_confirm
+  legal_support_contact_router:
+  - manual_confirm
+  - local_contact_book
+  - no_autodial_without_confirm
+  human_contact_mode:
+  - external_review
+  - force_limits_validated
+  - deadman
+  - observer_present

@@ -1,0 +1,7 @@
+subassembly,fastener,qty,notes
+torso_shell,M3 heat-set insert,24,prototype shells
+electronics_tray,M3x8 screw,16,low-voltage only
+actuator_fixture,M4x12 screw,8,use metal inserts for repeated tests
+camera_bar,M3x6 screw,6,locking washers recommended
+e_stop_plate,M4 panel nut,4,front-accessible
+battery_cradle,M5 screw,8,do not use printed cradle as final load-bearing part

@@ -1,0 +1,22 @@
+robot:
+  name: Robotrola R-01 EVA Mk.II
+  owner_alias: sudopimp
+  repo: sudopimp/robotrola-core
+  version: 0.1.0
+dimensions:
+  height_m: 1.65
+  target_mass_kg: 48
+  dof_total_target: 42
+compute:
+  edge: NVIDIA Jetson AGX Thor/T5000-class
+  mcu: ESP32-S3 or STM32H7 safety board
+middleware:
+  ros2: jazzy
+  simulation:
+  - gazebo
+  - isaac-sim-optional
+  dataset: lerobot-compatible
+safety:
+  default_mode: SAFE_IDLE
+  human_contact_enabled: false
+  autonomous_locomotion_enabled: false

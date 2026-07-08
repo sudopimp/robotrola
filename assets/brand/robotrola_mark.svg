@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Robotrola mark">
+  <rect width="512" height="512" rx="48" fill="#f5ead8"/>
+  <circle cx="256" cy="256" r="182" fill="none" stroke="#8a4f21" stroke-width="8"/>
+  <circle cx="256" cy="140" r="28" fill="none" stroke="#8a4f21" stroke-width="8"/>
+  <path d="M256 168 L256 330 M156 214 L356 214 M186 368 L256 210 L326 368 M198 250 L146 326 M314 250 L366 326" fill="none" stroke="#8a4f21" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M92 256 C160 62 352 62 420 256 C352 450 160 450 92 256Z" fill="none" stroke="#b8793c" stroke-width="3" opacity=".65"/>
+</svg>

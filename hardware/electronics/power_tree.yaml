@@ -1,0 +1,18 @@
+battery_nominal_v: 48
+branches:
+- name: actuator_bus
+  voltage: 48
+  protected_by:
+  - main_fuse
+  - safety_contactor
+  enabled_by: safety_mcu
+- name: sensor_12v
+  voltage: 12
+  protected_by:
+  - fuse
+  - isolated_dc_dc
+- name: logic_5v
+  voltage: 5
+  protected_by:
+  - fuse
+  - isolated_dc_dc

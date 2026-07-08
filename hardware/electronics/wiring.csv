@@ -1,0 +1,8 @@
+net,from,to,type,notes
+ESTOP_LOOP,J1_ESTOP,J1_SAFETY_MCU,normally_closed,opens on e-stop
+DEADMAN_LOOP,J2_DEADMAN,J1_SAFETY_MCU,normally_closed,opens when released
+CONTACTOR_ENABLE,SAFETY_MCU,DC_CONTACTOR,low_side_drive,hardware gate
+CAN_FD,EDGE_COMPUTE,MOTOR_BRIDGE,differential,shielded twisted pair
+RS485_DXL,MOTOR_BRIDGE,DYNAMIXEL_BUS,differential,stub lengths short
+USB3_HEAD_CAM,EDGE_COMPUTE,REALSense_OR_ORBBEC,usb3,locking connector recommended
+LEAK_SIG,LEAK_SENSOR,SAFETY_MCU,digital_input,fluid module interlock

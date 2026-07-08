@@ -1,0 +1,11 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+joint_state_broadcaster:
+  type: joint_state_broadcaster/JointStateBroadcaster
+safe_position_controller:
+  type: forward_command_controller/ForwardCommandController
+  joints:
+  - neck_yaw
+  - left_shoulder_pitch
+  - left_elbow

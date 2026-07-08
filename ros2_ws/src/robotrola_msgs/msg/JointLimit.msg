@@ -1,0 +1,5 @@
+string joint_name
+float64 min_position_rad
+float64 max_position_rad
+float64 max_velocity_rad_s
+float64 max_effort_nm

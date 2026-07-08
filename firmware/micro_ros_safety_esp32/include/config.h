@@ -1,0 +1,7 @@
+#pragma once
+#define PIN_ESTOP_NC 4
+#define PIN_DEADMAN_NC 5
+#define PIN_LEAK_OK 6
+#define PIN_CONTACTOR_ENABLE 12
+#define PIN_STATUS_LED 13
+#define WATCHDOG_TIMEOUT_MS 250

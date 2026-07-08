@@ -1,0 +1,7 @@
+head_rgbd_primary:
+  driver: realsense2_camera or orbbec_camera
+  frame_id: head_camera_link
+  record_by_default: false
+privacy:
+  cloud_upload: false
+  retention_days: 0

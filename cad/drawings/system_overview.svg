@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+<style>text{font-family:Inter,Arial,sans-serif;fill:#2b1b10}.box{fill:#fff7ea;stroke:#9a612f;stroke-width:2}.line{stroke:#9a612f;stroke-width:2;marker-end:url(#arrow)}.title{font-size:34px;font-weight:700}.small{font-size:18px}</style>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#9a612f"/></marker></defs>
+<rect width="1200" height="720" fill="#f4ead9"/><text x="48" y="64" class="title">Robotrola R-01 Core System</text>
+<rect x="60" y="120" width="210" height="90" rx="16" class="box"/><text x="90" y="170" class="small">RGB-D + Mic + Tactile</text>
+<rect x="350" y="120" width="210" height="90" rx="16" class="box"/><text x="390" y="170" class="small">Edge AI / ROS 2</text>
+<rect x="650" y="120" width="210" height="90" rx="16" class="box"/><text x="690" y="170" class="small">Safety Supervisor</text>
+<rect x="940" y="120" width="210" height="90" rx="16" class="box"/><text x="980" y="170" class="small">Actuator Bus</text>
+<line x1="270" y1="165" x2="350" y2="165" class="line"/><line x1="560" y1="165" x2="650" y2="165" class="line"/><line x1="860" y1="165" x2="940" y2="165" class="line"/>
+<rect x="350" y="320" width="210" height="90" rx="16" class="box"/><text x="386" y="370" class="small">LeRobot Dataset</text>
+<rect x="650" y="320" width="210" height="90" rx="16" class="box"/><text x="700" y="370" class="small">Safety MCU</text>
+<rect x="940" y="320" width="210" height="90" rx="16" class="box"/><text x="975" y="370" class="small">Contactor / Power</text>
+<line x1="455" y1="210" x2="455" y2="320" class="line"/><line x1="755" y1="210" x2="755" y2="320" class="line"/><line x1="860" y1="365" x2="940" y2="365" class="line"/>
+<rect x="60" y="520" width="1090" height="90" rx="16" fill="none" stroke="#9a612f" stroke-width="2" stroke-dasharray="8 8"/><text x="90" y="573" class="small">Rule: AI proposes actions. Safety layers approve or reject. MCU owns power.</text>
+</svg>

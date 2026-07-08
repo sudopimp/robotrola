@@ -1,0 +1,37 @@
+connectors:
+  J1_ESTOP_LOOP:
+    type: NC safety loop
+    pins:
+    - ESTOP_A
+    - ESTOP_B
+  J2_DEADMAN_LOOP:
+    type: NC safety loop
+    pins:
+    - DEADMAN_A
+    - DEADMAN_B
+  J3_CONTACTOR:
+    type: contactor drive feedback
+    pins:
+    - CONTACTOR_ENABLE
+    - CONTACTOR_FB
+    - GND
+  J4_CAN_FD:
+    type: CAN-FD
+    pins:
+    - CAN_H
+    - CAN_L
+    - GND
+    - SHIELD
+  J5_RS485_DXL:
+    type: DYNAMIXEL/RS485
+    pins:
+    - D+
+    - D-
+    - V+
+    - GND
+  J6_LEAK_SENSOR:
+    type: digital input
+    pins:
+    - LEAK_SIG
+    - 3V3
+    - GND

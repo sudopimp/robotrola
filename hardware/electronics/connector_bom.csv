@@ -1,0 +1,6 @@
+connector,quantity,role,notes
+NC e-stop connector,2,safety loop,use locking connector
+CAN-FD connector,4,motor/safety bus,shielded twisted pair
+USB3 locking cable,2,rgb-d cameras,strain relief required
+Molex MicroFit or equivalent,10,power distribution,select rating by current
+JST-GH or equivalent,20,low-current sensors,avoid high current

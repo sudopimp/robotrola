@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Robotrola LeRobot-compatible Episode",
+  "type": "object",
+  "required": [
+    "episode_id",
+    "robot",
+    "calibration_hash",
+    "frames"
+  ],
+  "properties": {
+    "episode_id": {
+      "type": "string"
+    },
+    "robot": {
+      "type": "string"
+    },
+    "calibration_hash": {
+      "type": "string"
+    },
+    "task": {
+      "type": "string"
+    },
+    "frames": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "timestamp",
+          "observation",
+          "action",
+          "safety_state"
+        ],
+        "properties": {
+          "timestamp": {
+            "type": "number"
+          },
+          "observation": {
+            "type": "object"
+          },
+          "action": {
+            "type": "object"
+          },
+          "safety_state": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
