@@ -1,17 +1,13 @@
-# Publicar core en GitHub (`sudopimp`)
+# Publish checklist (`sudopimp/robotrola`)
+
+1. `gh api user --jq .login` prints `sudopimp`
+2. `make diligence` exits 0
+3. README badges / claims matrix still honest
+4. `git push origin main`
 
 ```bash
-cd "$(dirname "$0")"
-git status
-gh auth status   # asegurate de estar logueado como sudopimp, NO waitdeadai
-gh repo create sudopimp/robotrola --public \
-  --description "Robotrola Core SOTA 2026 — humanoid open R&D (ROS2, CAD, safety)" \
-  --source=. --remote=origin --push
-```
-
-Si el repo ya existe vacío:
-
-```bash
-git remote add origin https://github.com/sudopimp/robotrola.git
+cd robotrola-core   # or clone root
+make diligence
+git remote -v       # → github.com/sudopimp/robotrola
 git push -u origin main
 ```

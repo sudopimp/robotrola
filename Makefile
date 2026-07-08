@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: test validate bom cad-catalog zip
+.PHONY: test validate bom bom-cost safety-path demo description cad-catalog diligence zip
 
 test:
 	$(PYTHON) -m pytest -q
@@ -10,6 +10,20 @@ validate:
 
 bom:
 	$(PYTHON) scripts/bom_summary.py
+
+bom-cost:
+	$(PYTHON) scripts/bom_cost_model.py
+
+safety-path:
+	$(PYTHON) scripts/run_safety_path.py
+
+demo:
+	$(PYTHON) scripts/demo_investor.py
+
+diligence: test validate bom-cost safety-path demo
+
+description:
+	$(PYTHON) scripts/generate_robot_description.py
 
 cad-catalog:
 	$(PYTHON) tools/render_cad_catalog.py

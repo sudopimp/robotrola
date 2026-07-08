@@ -1,1 +1,9 @@
-Robotrola Core private R&D package generated for sudopimp. Third-party trademarks belong to their owners.
+Robotrola Core
+Copyright 2026 sudopimp and contributors
+
+This product includes software developed for the Robotrola open research humanoid platform.
+
+Software components are licensed under the Apache License, Version 2.0 — see LICENSE_SOFTWARE.
+Hardware documentation and CAD are licensed under CERN-OHL-S-2.0 — see LICENSE_HARDWARE.
+
+Third-party product names (e.g. DYNAMIXEL, Jetson, RealSense, ROS) are trademarks of their respective owners and are used only for interoperability documentation.

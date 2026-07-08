@@ -1,31 +1,34 @@
+# Robotrola Core
 
-# Robotrola Core — I+D Humanoide de Compañía Adulta SOTA 2026
+**Plataforma abierta de investigación** para un humanoide de compañía adulta, safety-first y **no explícito**.
 
-**Repositorio privado sugerido:** `sudopimp/robotrola`  
-**Estado:** base de fabricación e investigación; no es un producto certificado.  
-**Alcance:** hardware, impresión 3D, electrónica, firmware, ROS 2, simulación, seguridad, calibración, validación y documentación de fabricación.  
-**Sitio web:** excluido a propósito; la landing va en otro proyecto.
+[English README](README.md) · [Matriz de claims](docs/CLAIMS_MATRIX.md) · [Brief técnico](docs/INVESTOR_TECH_BRIEF.md)
 
-Robotrola Core es un repo privado, serio y safety-first para convertir Robotrola en un prototipo humanoide reproducible de laboratorio. Incluye geometría imprimible, BOM, cableado, software, simulación, firmware y documentación para avanzar desde concepto hacia prototipo real.
+## Qué es / qué no es
 
-> No usar para contacto humano sin revisión mecánica, eléctrica, legal, de privacidad y de seguridad robótica.
+| Sí | No |
+|---|---|
+| Paquete completo de lab: 42 DOF, CAD, BOM, safety, firmware, ROS, datos | Producto de consumo certificado |
+| Demo re-ejecutable sin robot (`make diligence`) | Policy de biped lista en hardware |
+| Camino bench → torso → cuerpo completo | SKU de fábrica |
 
-## Incluye
-
-- Piezas 3D de referencia en `cad/stl/` y fuentes paramétricas en `cad/scad/`.
-- Descripción URDF/Xacro para RViz, Gazebo e integración ROS.
-- BOM con componentes SOTA 2026: cómputo, sensores, actuadores, energía, seguridad, piel, docking y módulos de servicio.
-- Workspace ROS 2: descripción, bringup, safety, percepción, control, teleoperación y mensajes.
-- Librería Python para configuración, límites, feature flags, BOM, cinemática y validación.
-- Firmware base para placa de seguridad ESP32-S3 con micro-ROS y bridge STM32/CAN/DYNAMIXEL.
-- Plan de simulación con Gazebo + Isaac Sim / Isaac Lab.
-- Adapter LeRobot y esquema de dataset para captura reproducible.
-- Documentos de riesgo, privacidad, uso adulto, validación y manufactura.
-
-## Subir como repo privado
+## Demo en 90 segundos
 
 ```bash
-bash scripts/create_private_github_repo.sh sudopimp robotrola
+git clone https://github.com/sudopimp/robotrola.git
+cd robotrola
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+make diligence
+# → INVESTOR_DEMO_OK · dof=42
 ```
 
-La herramienta GitHub conectada en este chat identifica tu login como `sudopimp`, pero no expone acciones de creación/push de repos privados. Por eso dejé el proyecto completo y un helper para subirlo desde tu máquina autenticada.
+## Seguridad
+
+Módulos de alto riesgo **apagados por defecto** (`configs/feature_flags.yaml`).  
+Leé `SAFETY.md` y `DISCLAIMER.md` antes de cualquier prueba con personas.
+
+## Licencias
+
+- Software: Apache-2.0 (`LICENSE_SOFTWARE`)
+- Hardware/CAD: CERN-OHL-S-2.0 (`LICENSE_HARDWARE`)

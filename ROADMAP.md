@@ -1,26 +1,28 @@
-
 # Roadmap
 
-## Phase 0 — Private engineering repo
+## Phase 0 — Complete open research platform (software package) ✅
 - [x] Repo structure
-- [x] Reference printable CAD
+- [x] Reference printable CAD + print manifest stages (bench / upper_body / full_body)
 - [x] BOM and harness maps
 - [x] Safety and privacy plan
-- [x] ROS 2 package scaffolds
-- [x] Firmware scaffolds
-- [x] Test suite and CI
+- [x] Full-body 42-DOF URDF + joint limits + mesh wiring
+- [x] Pure-Python safety supervisor + command path (`scripts/run_safety_path.py`)
+- [x] ROS 2 packages with thin safety node (delegates to Python library)
+- [x] Safety MCU firmware protocol (HEARTBEAT/RESET/FAULT/STATUS)
+- [x] STM32 DYNAMIXEL bridge firmware sources (not README-only)
+- [x] Completeness tests + `validate_repo` gates + CI hooks
 
-## Phase 1 — Bench prototype
+## Phase 1 — Bench prototype (physical)
 - [ ] Print non-load-bearing reference parts
 - [ ] Build electronics tray only
-- [ ] Validate safety MCU, e-stop, watchdog, power cut
-- [ ] Validate one DYNAMIXEL/CAN actuator on fixture
+- [ ] Flash/validate safety MCU, e-stop, watchdog, power cut on hardware
+- [ ] Validate one DYNAMIXEL actuator on fixture via motor bridge
 - [ ] Run perception node with RGB-D camera
 - [ ] Record LeRobot-compatible bench dataset
 
 ## Phase 2 — Upper-body test rig
 - [ ] Head/neck, torso, arms on fixed stand
-- [ ] Force-limited arm movement
+- [ ] Force-limited arm movement under safety supervisor
 - [ ] Audio/voice local-only path
 - [ ] Docking alignment target tests
 - [ ] Idle hygiene dock as sealed external device only

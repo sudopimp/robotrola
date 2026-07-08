@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "robotrola-core"
-version = "0.1.0"
-description = "Robotrola SOTA 2026 humanoid R&D core: hardware, safety, ROS, and fabrication tooling"
+version = "0.3.0"
+description = "Robotrola complete open research humanoid platform: 42-DOF, safety path, protocol sim, BOM cost model, firmware, ROS"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0 AND CERN-OHL-S-2.0"

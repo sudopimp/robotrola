@@ -1,22 +1,30 @@
+# Publishing this repository
 
-# Create private GitHub repository
+Canonical remote:
 
-The connected GitHub login detected in ChatGPT was `sudopimp`, but the available connector actions in this environment do not include repo creation or push. Use this from your local machine:
-
-```bash
-unzip robotrola_core_sota2026_repo.zip
-cd robotrola_core_sota2026
-bash scripts/create_private_github_repo.sh sudopimp robotrola
+```text
+https://github.com/sudopimp/robotrola
 ```
 
-Manual alternative:
+## Create (if empty)
 
 ```bash
-gh repo create sudopimp/robotrola --private --description "Robotrola Core SOTA 2026 humanoid hardware/software R&D"
-git init
-git add .
-git commit -m "Initial Robotrola Core SOTA 2026 hardware and software scaffold"
-git branch -M main
-git remote add origin https://github.com/sudopimp/robotrola.git
-git push -u origin main
+# must be authenticated as sudopimp
+gh api user --jq .login   # → sudopimp
+
+gh repo create sudopimp/robotrola --public \
+  --description "Robotrola Core — open research humanoid: 42-DOF, safety, firmware, BOM, ROS 2" \
+  --source=. --remote=origin --push
 ```
+
+## Update
+
+```bash
+git add -A
+git status
+git commit -m "Describe change"
+git push origin main
+make diligence   # before push preferred
+```
+
+Do **not** push using the `waitdeadai` (or any other) GitHub account for this project.

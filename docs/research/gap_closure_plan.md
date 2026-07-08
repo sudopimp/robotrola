@@ -16,7 +16,7 @@ This document exists because a convincing humanoid image is not a buildable robo
 
 ## Gap 2 — Safety certification
 
-**Current state:** safety architecture, safety MCU scaffold, e-stop, deadman, interlock model.  
+**Current state:** safety architecture, real safety MCU + motor-bridge firmware sources, host protocol simulator, pure-Python supervisor, e-stop/deadman/interlock model.  
 **Gap:** not certified under machinery/collaborative robot standards.  
 **Closure path:**
 

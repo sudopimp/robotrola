@@ -1,0 +1,180 @@
+# R-01 joint map (42 revolute DOF)
+dof_total: 42
+groups:
+  torso: [waist_yaw, waist_pitch, waist_roll]
+  head: [neck_yaw, neck_pitch, neck_roll]
+  left_arm: [left_shoulder_pitch, left_shoulder_roll, left_shoulder_yaw, left_elbow, left_wrist_yaw, left_wrist_pitch, left_wrist_roll]
+  right_arm: [right_shoulder_pitch, right_shoulder_roll, right_shoulder_yaw, right_elbow, right_wrist_yaw, right_wrist_pitch, right_wrist_roll]
+  left_hand: [left_thumb_curl, left_index_curl, left_middle_curl, left_ring_curl, left_pinky_curl]
+  right_hand: [right_thumb_curl, right_index_curl, right_middle_curl, right_ring_curl, right_pinky_curl]
+  left_leg: [left_hip_yaw, left_hip_roll, left_hip_pitch, left_knee, left_ankle_pitch, left_ankle_roll]
+  right_leg: [right_hip_yaw, right_hip_roll, right_hip_pitch, right_knee, right_ankle_pitch, right_ankle_roll]
+joints:
+  - name: waist_yaw
+    parent: pelvis_link
+    child: waist_link
+    type: revolute
+  - name: waist_pitch
+    parent: waist_link
+    child: torso_link
+    type: revolute
+  - name: waist_roll
+    parent: torso_link
+    child: torso_roll_link
+    type: revolute
+  - name: neck_yaw
+    parent: torso_roll_link
+    child: neck_yaw_link
+    type: revolute
+  - name: neck_pitch
+    parent: neck_yaw_link
+    child: neck_pitch_link
+    type: revolute
+  - name: neck_roll
+    parent: neck_pitch_link
+    child: head_link
+    type: revolute
+  - name: left_shoulder_pitch
+    parent: torso_roll_link
+    child: left_shoulder_pitch_link
+    type: revolute
+  - name: left_shoulder_roll
+    parent: left_shoulder_pitch_link
+    child: left_shoulder_roll_link
+    type: revolute
+  - name: left_shoulder_yaw
+    parent: left_shoulder_roll_link
+    child: left_upper_arm_link
+    type: revolute
+  - name: left_elbow
+    parent: left_upper_arm_link
+    child: left_forearm_link
+    type: revolute
+  - name: left_wrist_yaw
+    parent: left_forearm_link
+    child: left_wrist_yaw_link
+    type: revolute
+  - name: left_wrist_pitch
+    parent: left_wrist_yaw_link
+    child: left_wrist_pitch_link
+    type: revolute
+  - name: left_wrist_roll
+    parent: left_wrist_pitch_link
+    child: left_hand_link
+    type: revolute
+  - name: left_thumb_curl
+    parent: left_hand_link
+    child: left_thumb_link
+    type: revolute
+  - name: left_index_curl
+    parent: left_hand_link
+    child: left_index_link
+    type: revolute
+  - name: left_middle_curl
+    parent: left_hand_link
+    child: left_middle_link
+    type: revolute
+  - name: left_ring_curl
+    parent: left_hand_link
+    child: left_ring_link
+    type: revolute
+  - name: left_pinky_curl
+    parent: left_hand_link
+    child: left_pinky_link
+    type: revolute
+  - name: right_shoulder_pitch
+    parent: torso_roll_link
+    child: right_shoulder_pitch_link
+    type: revolute
+  - name: right_shoulder_roll
+    parent: right_shoulder_pitch_link
+    child: right_shoulder_roll_link
+    type: revolute
+  - name: right_shoulder_yaw
+    parent: right_shoulder_roll_link
+    child: right_upper_arm_link
+    type: revolute
+  - name: right_elbow
+    parent: right_upper_arm_link
+    child: right_forearm_link
+    type: revolute
+  - name: right_wrist_yaw
+    parent: right_forearm_link
+    child: right_wrist_yaw_link
+    type: revolute
+  - name: right_wrist_pitch
+    parent: right_wrist_yaw_link
+    child: right_wrist_pitch_link
+    type: revolute
+  - name: right_wrist_roll
+    parent: right_wrist_pitch_link
+    child: right_hand_link
+    type: revolute
+  - name: right_thumb_curl
+    parent: right_hand_link
+    child: right_thumb_link
+    type: revolute
+  - name: right_index_curl
+    parent: right_hand_link
+    child: right_index_link
+    type: revolute
+  - name: right_middle_curl
+    parent: right_hand_link
+    child: right_middle_link
+    type: revolute
+  - name: right_ring_curl
+    parent: right_hand_link
+    child: right_ring_link
+    type: revolute
+  - name: right_pinky_curl
+    parent: right_hand_link
+    child: right_pinky_link
+    type: revolute
+  - name: left_hip_yaw
+    parent: pelvis_link
+    child: left_hip_yaw_link
+    type: revolute
+  - name: left_hip_roll
+    parent: left_hip_yaw_link
+    child: left_hip_roll_link
+    type: revolute
+  - name: left_hip_pitch
+    parent: left_hip_roll_link
+    child: left_thigh_link
+    type: revolute
+  - name: left_knee
+    parent: left_thigh_link
+    child: left_shin_link
+    type: revolute
+  - name: left_ankle_pitch
+    parent: left_shin_link
+    child: left_ankle_pitch_link
+    type: revolute
+  - name: left_ankle_roll
+    parent: left_ankle_pitch_link
+    child: left_foot_link
+    type: revolute
+  - name: right_hip_yaw
+    parent: pelvis_link
+    child: right_hip_yaw_link
+    type: revolute
+  - name: right_hip_roll
+    parent: right_hip_yaw_link
+    child: right_hip_roll_link
+    type: revolute
+  - name: right_hip_pitch
+    parent: right_hip_roll_link
+    child: right_thigh_link
+    type: revolute
+  - name: right_knee
+    parent: right_thigh_link
+    child: right_shin_link
+    type: revolute
+  - name: right_ankle_pitch
+    parent: right_shin_link
+    child: right_ankle_pitch_link
+    type: revolute
+  - name: right_ankle_roll
+    parent: right_ankle_pitch_link
+    child: right_foot_link
+    type: revolute

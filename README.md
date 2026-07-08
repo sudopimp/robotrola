@@ -1,104 +1,279 @@
+<p align="center">
+  <img src="assets/brand/robotrola_mark.svg" alt="Robotrola" width="96" />
+</p>
 
-# Robotrola — SOTA 2026 Adult Companion Humanoid R&D
+<h1 align="center">Robotrola Core</h1>
 
-**Target private repository:** `sudopimp/robotrola`  
-**Status:** fabrication-ready research scaffold, not a certified consumer product.  
-**Scope:** hardware, 3D-print assets, electronics, firmware, ROS 2 software, simulation, safety, calibration, validation, and manufacturing docs.  
-**Website:** intentionally excluded; landing page lives in a separate project.
+<p align="center">
+  <strong>Complete open research platform for a safety-first adult companion humanoid</strong><br/>
+  42-DOF description · printable CAD · BOM · layered safety · MCU firmware · ROS 2 · LeRobot path
+</p>
 
-Robotrola is a private, safety-first engineering repository for building a non-explicit adult companion humanoid research platform. It is designed as a realistic path from concept to lab prototype: printable mechanical references, modular electronics, ROS 2 bringup, safety supervision, privacy-first local AI, simulation hooks, and LeRobot-compatible data capture.
+<p align="center">
+  <a href="https://github.com/sudopimp/robotrola/actions"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/sudopimp/robotrola/ci.yml?branch=main&style=flat-square&label=CI" /></a>
+  <a href="LICENSE_SOFTWARE"><img alt="Software license" src="https://img.shields.io/badge/software-Apache%202.0-blue?style=flat-square" /></a>
+  <a href="LICENSE_HARDWARE"><img alt="Hardware license" src="https://img.shields.io/badge/hardware-CERN--OHL--S%202.0-blue?style=flat-square" /></a>
+  <a href="docs/CLAIMS_MATRIX.md"><img alt="Claims" src="https://img.shields.io/badge/claims-matrix-important?style=flat-square" /></a>
+  <a href="SPEC.md"><img alt="SPEC" src="https://img.shields.io/badge/SPEC-verified-success?style=flat-square" /></a>
+  <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white" />
+  <img alt="ROS 2" src="https://img.shields.io/badge/ROS%202-Jazzy-22314E?style=flat-square" />
+</p>
 
-> This repo does **not** claim to be a finished robot. It is an engineering starting point that must be reviewed by mechanical, electrical, robotics-safety, privacy, and legal professionals before any human-contact operation.
+<p align="center">
+  <img src="assets/visual/robotrola-r01-eva-hero.png" alt="Robotrola R-01 reference hero" width="720" />
+</p>
 
-## What is included
+> **Not a certified consumer product.** Robotrola Core is a **lab-grade open research / build package** (bench → upper body → full body).  
+> Pitch only what is listed under **Proven today** in [`docs/CLAIMS_MATRIX.md`](docs/CLAIMS_MATRIX.md).
 
-- **3D printable reference parts** in `cad/stl/` plus parametric OpenSCAD sources in `cad/scad/`.
-- **URDF/Xacro-style robot description** and mesh references for simulation and ROS visualization.
-- **BOM and sourcing matrix** with SOTA 2026 compute, sensing, actuation, power, safety, skin, docking, and service modules.
-- **ROS 2 workspace** with description, bringup, safety, perception, control, teleop, and message package scaffolds.
-- **Python library** for configuration, safety limits, feature flags, BOM parsing, simple kinematics, and validation.
-- **Firmware scaffolds** for an ESP32-S3 micro-ROS safety board and STM32/CAN/DYNAMIXEL bridge.
-- **Simulation plan** for Gazebo + Isaac Sim / Isaac Lab, including bridge configs and digital-twin notes.
-- **LeRobot adapter** and dataset schema for reproducible data collection.
-- **Safety and privacy docs**: risk register, adult-only policy, interlock model, validation plan, and manufacturing checklist.
+---
 
-## SOTA 2026 stack decision
+## Why this exists
 
-| Layer | Baseline | Why |
-|---|---|---|
-| Robotics middleware | ROS 2 Jazzy baseline | Stable ROS 2 baseline with strong ecosystem and long support window. |
-| Robot learning | LeRobot-compatible datasets | Publicly documented models/datasets/tools for real-world robotics in PyTorch. |
-| Edge AI | Jetson AGX Thor / T5000 class | 2026 physical-AI edge compute target for humanoid-grade perception and local models. |
-| Simulation | Gazebo + Isaac Sim/Isaac Lab | Open simulation plus high-fidelity GPU workflows for sim-to-real. |
-| Manipulation | MoveIt 2 + local safety supervisor | Mature ROS 2 manipulation planning plus hard runtime gates. |
-| Perception | RealSense D455 / Orbbec RGB-D + YOLO11 | Depth, RGB, pose/object detection, and local-first perception. |
-| Actuation | DYNAMIXEL X-series + custom actuator R&D | Reliable networked smart actuators for prototypes; printable actuator experiments for cost-down. |
-| Safety | E-stop, force limits, speed zones, interlocks | Required before any human-contact experimentation. |
-| Privacy | Local-first voice and logs | No cloud by default; explicit user-controlled retention. |
+Most “companion humanoid” decks stop at renders. Credible open humanoid work (Humanoid Lite, ToddlerBot, Reachy-class platforms) ships **description + BOM + fixtures + safety gates + data path** first.
 
-## Repository layout
+Robotrola Core is that stack for a **non-explicit, privacy-first, adult-only** research line: AI stays above hard safety; the MCU owns power isolation.
+
+| You get today | You do **not** get |
+|---|---|
+| 42-DOF full-body URDF + joint limits | CE / UL / ISO cobot certification |
+| Runnable pure-Python safety path | Factory SKU or walking policy weights |
+| Real ESP32 + STM32 bridge firmware sources | Load-bearing proof of every STL |
+| BOM + stage cost bands (USD) | Retail “companion product” claims |
+| Thin ROS 2 packages + LeRobot episode writer | Cloud brain by default |
+
+---
+
+## 90-second diligence demo (no robot, no ROS)
+
+```bash
+git clone https://github.com/sudopimp/robotrola.git
+cd robotrola
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+make diligence
+```
+
+Expected:
 
 ```text
-cad/                 Parametric CAD, STL, URDF, drawings, print manifest
-hardware/            BOM, wiring, power tree, harness maps, material guidance
-firmware/            Safety MCU and motor bridge firmware scaffolds
-ros2_ws/src/         ROS 2 packages for description, safety, perception, control, bringup
-robotrola/           Python package used by tooling and tests
-simulation/          Gazebo and Isaac Sim integration notes/configs
-lerobot/             Dataset schema + adapter skeleton
-docs/                Research, assembly, safety, validation, privacy, manufacturing
-assets/              Visual references and brand assets for README/docs only
-scripts/             Repo validation, BOM summary, GitHub upload helper
-tests/               Python tests
-.github/             CI, issue templates, PR template, dependabot
+pytest                 → green
+validate_repo          → VALIDATION PASSED
+demo_investor          → INVESTOR_DEMO_OK  dof=42
+bom_cost_model         → bench / upper_body / full_body USD bands
 ```
 
-## Quick start: validate repo locally
+Or run pieces:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e .[dev]
 pytest -q
 python scripts/validate_repo.py
-python scripts/bom_summary.py
+python scripts/bom_cost_model.py
+python scripts/run_safety_path.py
+python scripts/demo_investor.py
 ```
 
-## Quick start: ROS 2 workspace
+**Technical brief:** [`docs/INVESTOR_TECH_BRIEF.md`](docs/INVESTOR_TECH_BRIEF.md) · **Claims matrix:** [`docs/CLAIMS_MATRIX.md`](docs/CLAIMS_MATRIX.md) · **Contract:** [`SPEC.md`](SPEC.md)
+
+---
+
+## Architecture
+
+```text
+Teleop / local policy proposal
+        │
+        ▼
+Feature flags  (dangerous modules OFF by default)
+        │
+        ▼
+Safety supervisor  (mode · joint limits · interlocks)   ← pure Python, tested
+        │
+        ▼
+Approved commands only
+        │
+        ▼
+Motor bridge MCU  (local clamps · heartbeat · SAFETY_OK) ← C++ source
+        │
+        ▼
+Safety MCU  (e-stop · deadman · leak · contactor · WD)   ← C++ source
+        │
+        ▼
+Actuator power bus
+```
+
+<details>
+<summary><strong>Mermaid (system view)</strong></summary>
+
+```mermaid
+flowchart TD
+  U[Operator / adult user] --> UI[Local control]
+  UI --> Task[Task / teleop / policy proposal]
+  CAM[RGB-D] --> Perc[Perception]
+  Perc --> Task
+  Task --> Safe[Safety supervisor]
+  Safe --> Ctrl[Low-level control]
+  Ctrl --> Bridge[Motor bridge firmware]
+  Bridge --> Bus[Actuator bus]
+  MCU[Safety MCU] -->|contactor| Bus
+  ESTOP[E-stop / deadman] --> MCU
+  Safe -.->|mirror protocol| MCU
+```
+
+</details>
+
+<p align="center">
+  <img src="assets/visual/repo_reference_architecture.png" alt="Architecture reference" width="640" />
+</p>
+
+---
+
+## Repository map
+
+```text
+cad/            URDF (42 DOF), STL/GLB references, print manifest (stages)
+hardware/       BOM, power tree, harness, wiring
+firmware/       ESP32 safety MCU + STM32 DYNAMIXEL bridge
+robotrola/      Python: safety, command_path, protocol_sim, cost_model, validators
+ros2_ws/src/    description · safety node · control · perception · teleop · bringup
+lerobot/        episode writer + schema (approved actions only)
+simulation/     Gazebo / Isaac notes
+docs/           builds, safety, privacy, diligence, manufacturing
+scripts/        validate · demo_investor · bom_cost · generate description
+tests/          completeness + safety + protocol + claims gates
+```
+
+---
+
+## Research build path
+
+| Stage | Goal | Docs |
+|---|---|---|
+| **Bench** | Safety MCU, e-stop, tray, one actuator fixture | [`docs/builds/00_…`](docs/builds/00_bench_safety_mcu.md) · [`01_…`](docs/builds/01_one_actuator_fixture.md) |
+| **Upper body** | Head/torso/arms on stand, teleop + limits | [`docs/builds/02_…`](docs/builds/02_upper_body_stand.md) |
+| **Full body** | Legs, pack, docking/service (flags off) | [`docs/builds/03_…`](docs/builds/03_full_body_research_rig.md) |
+
+Print parts carry a `stage` column in [`cad/print_manifest.csv`](cad/print_manifest.csv).
+
+Indicative **parts-only** BOM bands (not a quote; no labor/cert):
 
 ```bash
-# Ubuntu 24.04 + ROS 2 Jazzy baseline
-cd ros2_ws
-rosdep update
-rosdep install --from-paths src --ignore-src -r -y
-colcon build --symlink-install
-source install/setup.bash
-ros2 launch robotrola_bringup sim_smoke.launch.py
+python scripts/bom_cost_model.py
+# example order of magnitude from shipped BOM text ranges:
+#   bench ~ $1.4k–$5.3k · upper ~ $5.6k–$24k · full research ~ $6.3k–$36k
 ```
 
-## Quick start: CAD assets
+---
 
-STLs are included in `cad/stl/`. They are **reference printable geometry**, not final production tooling. Use them to validate scale, packaging, cable routing, sensor placement, and test fixtures.
+## Stack (SOTA 2026 target)
+
+| Layer | Choice |
+|---|---|
+| Middleware | ROS 2 Jazzy |
+| Learning data | LeRobot-compatible episodes |
+| Edge AI | Jetson AGX Thor / T5000 class (Orin OK for bench) |
+| Sim | Gazebo + Isaac Sim / Lab |
+| Actuation | DYNAMIXEL X-series (+ custom actuator R&D fixtures) |
+| Safety | E-stop, deadman, watchdog, joint limits, feature flags |
+| Privacy | Local-first voice/logs; cloud off by default |
+
+---
+
+## Quick starts
+
+### Python package
+
+```bash
+pip install -e ".[dev]"
+make diligence          # full gate used in CI
+```
+
+### ROS 2 (optional)
+
+```bash
+# Ubuntu 24.04 + ROS 2 Jazzy
+cd ros2_ws
+rosdep install --from-paths src --ignore-src -r -y
+colcon build --symlink-install && source install/setup.bash
+ros2 launch robotrola_safety safety.launch.py
+```
+
+The safety node **delegates** to the same `robotrola.safety` library as pure Python.
+
+### Firmware
+
+```bash
+cd firmware/micro_ros_safety_esp32 && pio run     # HEARTBEAT / RESET / FAULT / STATUS
+cd firmware/stm32_dynamixel_bridge && pio run -e stm32_bridge
+```
+
+Host-side protocol mirror for tests: `robotrola/protocol_sim.py`.
+
+### CAD
 
 ```bash
 python tools/generate_reference_stl.py
-python tools/render_cad_catalog.py
+python scripts/generate_robot_description.py   # regenerate URDF + limits
 ```
 
-## Private GitHub upload
+STLs are **reference** geometry—not certified load-bearing structure.
 
-I could not create the private repo directly from this environment because the connected GitHub tool currently exposes repository read/search operations but no create-repository or push/commit action, and the container does not include authenticated `gh`. This repo includes a one-command helper for your machine:
+---
 
-```bash
-bash scripts/create_private_github_repo.sh sudopimp robotrola
+## Safety & governance
+
+- Emergency stop must cut actuator power **independent** of Linux/ROS/AI.
+- High-risk modules (`human_contact_mode`, locomotion, hygiene, beverage, cloud) are **disabled by default** — see `configs/feature_flags.yaml`.
+- Hand curl commands are blocked in software while `human_contact_mode` is off.
+- Read [`SAFETY.md`](SAFETY.md), [`DISCLAIMER.md`](DISCLAIMER.md), [`docs/risk_register.md`](docs/risk_register.md).
+
+Adult-only, non-explicit research scope. Legal/privacy review before any human-adjacent study.
+
+---
+
+## Documentation index
+
+| Doc | Purpose |
+|---|---|
+| [`docs/CLAIMS_MATRIX.md`](docs/CLAIMS_MATRIX.md) | Proven vs lab-next vs not claimed |
+| [`docs/INVESTOR_TECH_BRIEF.md`](docs/INVESTOR_TECH_BRIEF.md) | Diligence one-pager |
+| [`SPEC.md`](SPEC.md) | Measurable completion conditions |
+| [`docs/architecture/system_architecture.md`](docs/architecture/system_architecture.md) | System design |
+| [`docs/research/sota_2026_repo_comparison.md`](docs/research/sota_2026_repo_comparison.md) | Peer open-humanoid patterns |
+| [`docs/research/gap_closure_plan.md`](docs/research/gap_closure_plan.md) | Honest gaps to physical robot |
+| [`ROADMAP.md`](ROADMAP.md) | Phase 0–4 |
+| [`README.es.md`](README.es.md) | Resumen en español |
+
+---
+
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md). PRs need design intent, risk impact, tests, and must not bypass safety defaults.
+
+## Security
+
+Report privately per [`SECURITY.md`](SECURITY.md). Default posture: local-first, no remote actuation.
+
+## License
+
+| Tree | License |
+|---|---|
+| Software (`robotrola/`, `scripts/`, ROS packages, firmware sources, tests) | [Apache-2.0](LICENSE_SOFTWARE) |
+| Hardware docs & CAD (`cad/`, `hardware/`, mechanical docs) | [CERN-OHL-S-2.0](LICENSE_HARDWARE) |
+| Brand / visual reference images under `assets/` | Project assets — replace with owned/commissioned media for commercial use |
+
+## Citation
+
+```bibtex
+@software{robotrola_core,
+  title  = {Robotrola Core: Open Research Humanoid Platform},
+  author = {sudopimp},
+  year   = {2026},
+  url    = {https://github.com/sudopimp/robotrola}
+}
 ```
 
-## Safety position
+---
 
-Robotrola is treated as an **adult-only, non-explicit, privacy-first humanoid R&D platform**. All high-risk physical modules are disabled by default in `configs/feature_flags.yaml`. Before enabling any actuator, docking, hygiene, beverage, or human-contact behavior, complete the risk register, electrical review, force-limit validation, thermal tests, and emergency-stop tests.
-
-## Licenses
-
-- Software: Apache-2.0, see `LICENSE_SOFTWARE`.
-- Hardware docs/CAD: CERN-OHL-S-2.0 intent, see `LICENSE_HARDWARE`.
-- Visual reference images: private project assets until you replace them with commissioned/owned assets.
+<p align="center">
+  <sub>Built to survive technical diligence — not to fake a product launch.</sub>
+</p>

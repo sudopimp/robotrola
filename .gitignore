@@ -1,13 +1,53 @@
+# Python
 .venv/
+venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
 build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ROS 2 / colcon
 install/
 log/
-.DS_Store
-.cache/
-*.egg-info/
+# keep source; ignore local build trees under ros2_ws
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# Firmware / PlatformIO
+.pio/
+.vscode/.browse.c_cpp.db*
+*.hex
+*.elf
+*.bin
+
+# Env & secrets
 .env
 .env.*
+!.env.example
+
+# OS / editors
+.DS_Store
+.idea/
+*.swp
+*~
+
+# Robotics data dumps
 *.bag
 *.db3
+*.mcap
+datasets/
+episodes/
+*.h5
+
+# Local CAD caches
+*.tmp
+.cache/

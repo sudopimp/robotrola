@@ -1,32 +1,234 @@
+# Auto-generated joint limits for R-01 (42 DOF) — source: scripts/generate_robot_description.py
 joint_limits:
   default:
     position_min_rad: -1.57
     position_max_rad: 1.57
     velocity_max_rad_s: 0.25
     effort_max_nm: 1.0
+  waist_yaw:
+    position_min_rad: -0.6
+    position_max_rad: 0.6
+    velocity_max_rad_s: 0.2
+    effort_max_nm: 2.0
+  waist_pitch:
+    position_min_rad: -0.35
+    position_max_rad: 0.45
+    velocity_max_rad_s: 0.2
+    effort_max_nm: 2.5
+  waist_roll:
+    position_min_rad: -0.3
+    position_max_rad: 0.3
+    velocity_max_rad_s: 0.2
+    effort_max_nm: 1.5
   neck_yaw:
     position_min_rad: -0.9
     position_max_rad: 0.9
     velocity_max_rad_s: 0.25
     effort_max_nm: 0.5
-  shoulder_pitch:
+  neck_pitch:
+    position_min_rad: -0.5
+    position_max_rad: 0.6
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 0.5
+  neck_roll:
+    position_min_rad: -0.35
+    position_max_rad: 0.35
+    velocity_max_rad_s: 0.2
+    effort_max_nm: 0.4
+  left_shoulder_pitch:
+    position_min_rad: -1.4
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 1.5
+  left_shoulder_roll:
+    position_min_rad: -0.3
+    position_max_rad: 1.5
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 1.2
+  left_shoulder_yaw:
     position_min_rad: -1.2
     position_max_rad: 1.2
-    velocity_max_rad_s: 0.2
-    effort_max_nm: 1.2
-  elbow:
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 1.0
+  left_elbow:
     position_min_rad: 0.0
-    position_max_rad: 2.1
+    position_max_rad: 2.2
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 1.0
+  left_wrist_yaw:
+    position_min_rad: -1.4
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.4
+    effort_max_nm: 0.4
+  left_wrist_pitch:
+    position_min_rad: -0.9
+    position_max_rad: 0.9
+    velocity_max_rad_s: 0.4
+    effort_max_nm: 0.4
+  left_wrist_roll:
+    position_min_rad: -0.9
+    position_max_rad: 0.9
+    velocity_max_rad_s: 0.4
+    effort_max_nm: 0.3
+  left_thumb_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  left_index_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  left_middle_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  left_ring_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  left_pinky_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  right_shoulder_pitch:
+    position_min_rad: -1.4
+    position_max_rad: 1.4
     velocity_max_rad_s: 0.25
-    effort_max_nm: 0.8
+    effort_max_nm: 1.5
+  right_shoulder_roll:
+    position_min_rad: -1.5
+    position_max_rad: 0.3
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 1.2
+  right_shoulder_yaw:
+    position_min_rad: -1.2
+    position_max_rad: 1.2
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 1.0
+  right_elbow:
+    position_min_rad: 0.0
+    position_max_rad: 2.2
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 1.0
+  right_wrist_yaw:
+    position_min_rad: -1.4
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.4
+    effort_max_nm: 0.4
+  right_wrist_pitch:
+    position_min_rad: -0.9
+    position_max_rad: 0.9
+    velocity_max_rad_s: 0.4
+    effort_max_nm: 0.4
+  right_wrist_roll:
+    position_min_rad: -0.9
+    position_max_rad: 0.9
+    velocity_max_rad_s: 0.4
+    effort_max_nm: 0.3
+  right_thumb_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  right_index_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  right_middle_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  right_ring_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  right_pinky_curl:
+    position_min_rad: 0.0
+    position_max_rad: 1.4
+    velocity_max_rad_s: 0.5
+    effort_max_nm: 0.15
+  left_hip_yaw:
+    position_min_rad: -0.6
+    position_max_rad: 0.6
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 2.0
+  left_hip_roll:
+    position_min_rad: -0.4
+    position_max_rad: 0.4
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 2.0
+  left_hip_pitch:
+    position_min_rad: -1.4
+    position_max_rad: 0.8
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 3.0
+  left_knee:
+    position_min_rad: 0.0
+    position_max_rad: 2.2
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 3.0
+  left_ankle_pitch:
+    position_min_rad: -0.7
+    position_max_rad: 0.7
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 1.5
+  left_ankle_roll:
+    position_min_rad: -0.4
+    position_max_rad: 0.4
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 1.0
+  right_hip_yaw:
+    position_min_rad: -0.6
+    position_max_rad: 0.6
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 2.0
+  right_hip_roll:
+    position_min_rad: -0.4
+    position_max_rad: 0.4
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 2.0
+  right_hip_pitch:
+    position_min_rad: -1.4
+    position_max_rad: 0.8
+    velocity_max_rad_s: 0.25
+    effort_max_nm: 3.0
+  right_knee:
+    position_min_rad: 0.0
+    position_max_rad: 2.2
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 3.0
+  right_ankle_pitch:
+    position_min_rad: -0.7
+    position_max_rad: 0.7
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 1.5
+  right_ankle_roll:
+    position_min_rad: -0.4
+    position_max_rad: 0.4
+    velocity_max_rad_s: 0.3
+    effort_max_nm: 1.0
 thermal:
   compute_max_c: 75
   actuator_max_c: 65
   battery_max_c: 45
 power:
   battery_nominal_v: 48
-  actuator_bus_max_a: 20
-  logic_bus_max_a: 5
+  actuator_bus_max_a: 40
+  logic_bus_max_a: 8
 watchdog:
   main_heartbeat_timeout_ms: 250
   mcu_loop_period_ms: 10
+protocol:
+  serial_baud: 115200
+  heartbeat_cmd: HEARTBEAT
+  reset_cmd: RESET
+  fault_cmd: FAULT
+  status_cmd: STATUS
