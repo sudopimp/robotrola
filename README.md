@@ -17,6 +17,15 @@
   <a href="SPEC.md"><img alt="SPEC" src="https://img.shields.io/badge/SPEC-verified-success?style=flat-square" /></a>
   <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white" />
   <img alt="ROS 2" src="https://img.shields.io/badge/ROS%202-Jazzy-22314E?style=flat-square" />
+  <a href="https://robotrola.com"><img alt="Website" src="https://img.shields.io/badge/website-robotrola.com-111111?style=flat-square" /></a>
+</p>
+
+<p align="center">
+  <a href="https://robotrola.com">Website</a> ·
+  <a href="https://x.com/sudopimp">X @sudopimp</a> ·
+  <a href="https://github.com/sudopimp/robotrola">GitHub</a> ·
+  <a href="https://www.tiktok.com/@robotrola">TikTok @robotrola</a> ·
+  <a href="mailto:hello@robotrola.com">hello@robotrola.com</a>
 </p>
 
 <p align="center">
@@ -260,6 +269,16 @@ Report privately per [`SECURITY.md`](SECURITY.md). Default posture: local-first,
 | Software (`robotrola/`, `scripts/`, ROS packages, firmware sources, tests) | [Apache-2.0](LICENSE_SOFTWARE) |
 | Hardware docs & CAD (`cad/`, `hardware/`, mechanical docs) | [CERN-OHL-S-2.0](LICENSE_HARDWARE) |
 | Brand / visual reference images under `assets/` | Project assets — replace with owned/commissioned media for commercial use |
+
+## Links
+
+| | |
+|---|---|
+| Product site | [robotrola.com](https://robotrola.com) |
+| Open research core | [github.com/sudopimp/robotrola](https://github.com/sudopimp/robotrola) |
+| X | [@sudopimp](https://x.com/sudopimp) |
+| TikTok | [@robotrola](https://www.tiktok.com/@robotrola) |
+| Email | [hello@robotrola.com](mailto:hello@robotrola.com) |
 
 ## Citation
 

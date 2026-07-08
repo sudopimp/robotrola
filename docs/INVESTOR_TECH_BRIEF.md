@@ -2,7 +2,8 @@
 
 **Status:** complete open research / lab-build platform (software + docs + firmware sources)  
 **Not:** certified consumer product, factory SKU, or trained biped demo robot  
-**Repo role:** open engineering core (`sudopimp/robotrola`); product web is separate
+**Repo role:** open engineering core (`sudopimp/robotrola`)  
+**Product site:** [robotrola.com](https://robotrola.com) · **X:** [@sudopimp](https://x.com/sudopimp) · **TikTok:** [@robotrola](https://www.tiktok.com/@robotrola)
 
 ## Problem framing (technical)
 

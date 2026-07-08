@@ -2,7 +2,7 @@
 
 **Plataforma abierta de investigación** para un humanoide de compañía adulta, safety-first y **no explícito**.
 
-[English README](README.md) · [Matriz de claims](docs/CLAIMS_MATRIX.md) · [Brief técnico](docs/INVESTOR_TECH_BRIEF.md)
+[English README](README.md) · [Sitio](https://robotrola.com) · [X @sudopimp](https://x.com/sudopimp) · [TikTok @robotrola](https://www.tiktok.com/@robotrola) · [Claims](docs/CLAIMS_MATRIX.md)
 
 ## Qué es / qué no es
 
