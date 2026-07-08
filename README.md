@@ -25,7 +25,7 @@
   <a href="https://x.com/sudopimp">X @sudopimp</a> ·
   <a href="https://github.com/sudopimp/robotrola">GitHub</a> ·
   <a href="https://www.tiktok.com/@robotrola">TikTok @robotrola</a> ·
-  <a href="mailto:hello@robotrola.com">hello@robotrola.com</a>
+  <a href="mailto:hola@robotrola.com">hola@robotrola.com</a>
 </p>
 
 <p align="center">
@@ -278,7 +278,7 @@ Report privately per [`SECURITY.md`](SECURITY.md). Default posture: local-first,
 | Open research core | [github.com/sudopimp/robotrola](https://github.com/sudopimp/robotrola) |
 | X | [@sudopimp](https://x.com/sudopimp) |
 | TikTok | [@robotrola](https://www.tiktok.com/@robotrola) |
-| Email | [hello@robotrola.com](mailto:hello@robotrola.com) |
+| Email | [hola@robotrola.com](mailto:hola@robotrola.com) |
 
 ## Citation
 

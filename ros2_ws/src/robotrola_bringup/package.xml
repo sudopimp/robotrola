@@ -3,7 +3,7 @@
   <name>robotrola_bringup</name>
   <version>0.1.0</version>
   <description>Launch files for Robotrola</description>
-  <maintainer email="hello@robotrola.com">sudopimp</maintainer>
+  <maintainer email="hola@robotrola.com">sudopimp</maintainer>
   <license>Apache-2.0</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
   <exec_depend>rclpy</exec_depend>
