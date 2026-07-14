@@ -3,6 +3,7 @@
  * ------------------------------------------------
  * Independent interlock supervisor for the research platform.
  * Host (Jetson/Linux) speaks a line-oriented serial protocol at 115200 baud.
+ * Plain serial interlocks only (no XRCE-DDS, no rclc, no ROS 2 client graph).
  *
  * Protocol (newline-terminated commands, host → MCU):
  *   HEARTBEAT  — refresh watchdog timer (required while ACTIVE path is armed)

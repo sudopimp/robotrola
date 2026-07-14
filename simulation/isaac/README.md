@@ -9,5 +9,5 @@ Goals:
 - assign measured inertias
 - test camera and tactile synthetic data
 - run policy training in simulation
-- export LeRobot-compatible rollouts
+- export LeRobot-style episode rollouts (JSON scaffold / future v3)
 - compare sim-to-real actuator fixture response

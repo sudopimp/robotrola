@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Robotrola LeRobot-compatible Episode",
+  "title": "Robotrola LeRobot-style JSON Episode Scaffold (not LeRobotDataset v3)",
   "type": "object",
   "required": [
     "episode_id",

@@ -7,6 +7,8 @@ from robotrola.description import (
     assert_full_humanoid,
     revolute_joints,
     mesh_filenames,
+    inertial_coverage,
+    urdf_limits_align_with_safety,
     TARGET_DOF,
     MIN_HUMANOID_DOF,
 )
@@ -33,6 +35,32 @@ def test_urdf_not_placeholder():
     assert len(text.splitlines()) > 100
 
 
+def test_urdf_estimated_inertial_coverage():
+    """Every link in the shipped URDF must carry estimated mass/inertia."""
+    urdf = ROOT / "cad/urdf/robotrola_r01_reference.urdf.xacro"
+    cov = inertial_coverage(urdf)
+    assert cov["link_count"] >= TARGET_DOF
+    assert cov["inertial_count"] >= cov["link_count"]
+    assert cov["mass_count"] >= cov["link_count"]
+    assert all(m > 0 for m in cov["masses"])
+    assert cov["ok"] is True
+    # ROS copy must stay in lockstep
+    ros_urdf = (
+        ROOT
+        / "ros2_ws/src/robotrola_description/urdf/robotrola_r01_reference.urdf.xacro"
+    )
+    assert inertial_coverage(ros_urdf)["ok"] is True
+
+
+def test_urdf_limits_align_with_safety_map():
+    """Core joints: URDF <limit> must match configs/safety_limits.yaml."""
+    urdf = ROOT / "cad/urdf/robotrola_r01_reference.urdf.xacro"
+    limits = ROOT / "configs/safety_limits.yaml"
+    result = urdf_limits_align_with_safety(urdf, limits)
+    assert result["ok"] is True, result["mismatches"]
+    assert len(result["checked"]) >= 6
+
+
 def test_meshes_referenced_exist():
     meshes = mesh_filenames()
     assert len(meshes) >= 5
@@ -52,10 +80,16 @@ def test_joint_map_matches_urdf():
 
 
 def test_safety_mcu_protocol_complete():
-    src = (ROOT / "firmware/micro_ros_safety_esp32/src/main.cpp").read_text()
+    pkg = ROOT / "firmware/esp32_safety_mcu"
+    assert pkg.is_dir(), "safety MCU package must be firmware/esp32_safety_mcu"
+    assert not (ROOT / "firmware/micro_ros_safety_esp32").exists()
+    src = (pkg / "src/main.cpp").read_text()
     for token in ("HEARTBEAT", "RESET", "FAULT", "STATUS", "PIN_ESTOP", "WATCHDOG"):
         assert token in src
     assert len(src.splitlines()) >= 80
+    # Serial line protocol only — must not include micro-ROS / rclc client APIs
+    for bad in ("#include <micro_ros", "rclc_support", "rmw_microxrcedds", "rcl_init"):
+        assert bad not in src
 
 
 def test_motor_bridge_source_exists():

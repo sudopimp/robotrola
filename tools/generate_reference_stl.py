@@ -1,47 +1,168 @@
+#!/usr/bin/env python3
+"""Honest CAD regenerate guidance for Robotrola reference STLs.
+
+The shipped meshes under ``cad/stl/`` are **reference geometry only**
+(non-load-bearing shells/fixtures). They were produced from the OpenSCAD
+source in ``cad/scad/robotrola_parametric_reference.scad`` (rounded blocks /
+brackets — not production mechanical CAD).
+
+This script does **not** invent a second geometry engine and does **not**
+depend on absolute host paths. It:
+
+1. Verifies the SCAD source and print manifest exist.
+2. Optionally invokes ``openscad`` if installed to re-export a single module
+   (best-effort; many modules are in one file).
+3. Prints the documented SCAD → STL workflow for contributors.
+
+Usage (from repo root)::
+
+    python tools/generate_reference_stl.py
+    python tools/generate_reference_stl.py --list
+    python tools/generate_reference_stl.py --check
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import shutil
+import subprocess
+import sys
 from pathlib import Path
-import os, shutil, csv, json, textwrap, zipfile, math, yaml, hashlib, subprocess, sys
-import numpy as np
-import trimesh
-from PIL import Image, ImageDraw, ImageFont
 
-ROOT = Path('/mnt/data/robotrola_core_sota2026')
-if ROOT.exists(): shutil.rmtree(ROOT)
-ROOT.mkdir(parents=True)
-
-def w(path, content, mode='w'):
-    p = ROOT / path
-    p.parent.mkdir(parents=True, exist_ok=True)
-    with open(p, mode, encoding=None if 'b' in mode else 'utf-8') as f:
-        f.write(content)
-    return p
-
-def copy_if(src, dst):
-    s=Path(src)
-    if s.exists():
-        p=ROOT/dst
-        p.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(s,p)
-        return p
-
-# ------------------------ Branding / assets ------------------------
-for src, dst in [
-    ('/mnt/data/robotrola-r01-eva-hero.png','assets/visual/robotrola-r01-eva-hero.png'),
-    ('/mnt/data/robotrola-r01-eva-portrait.png','assets/visual/robotrola-r01-eva-portrait.png'),
-    ('/mnt/data/esquema_técnico_del_robotrola_r_01_eva.png','assets/visual/robotrola-blueprint-r01-eva.png'),
-    ('/mnt/data/página_web_de_robótica_open_source.png','assets/visual/repo_reference_home.png'),
-    ('/mnt/data/arquitectura_y_diseño_de_robótica_robotrola.png','assets/visual/repo_reference_architecture.png'),
-    ('/mnt/data/página_web_de_robotrola_seguridad_y_ética.png','assets/visual/repo_reference_safety.png'),
-    ('/mnt/data/robótica_avanzada_con_diseño_elegante.png','assets/visual/og-clean.png'),
-]: copy_if(src,dst)
-
-# create logo svg
-w('assets/brand/robotrola_mark.svg', '''<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Robotrola mark">
-  <rect width="512" height="512" rx="48" fill="#f5ead8"/>
-  <circle cx="256" cy="256" r="182" fill="none" stroke="#8a4f21" stroke-width="8"/>
-  <circle cx="256" cy="140" r="28" fill="none" stroke="#8a4f21" stroke-width="8"/>
-  <path d="M256 168 L256 330 M156 214 L356 214 M186 368 L256 210 L326 368 M198 250 L146 326 M314 250 L366 326" fill="none" stroke="#8a4f21" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M92 256 C160 62 352 62 420 256 C352 450 160 450 92 256Z" fill="none" stroke="#b8793c" stroke-width="3" opacity=".65"/>
-</svg>''')
+ROOT = Path(__file__).resolve().parents[1]
+SCAD = ROOT / "cad" / "scad" / "robotrola_parametric_reference.scad"
+STL_DIR = ROOT / "cad" / "stl"
+MANIFEST = ROOT / "cad" / "print_manifest.csv"
 
 
-print('Reference STL generation is embedded in the repository build script. Use /tools source as template.')
+def list_stls() -> list[Path]:
+    return sorted(STL_DIR.glob("*.stl"))
+
+
+def check_repo() -> list[str]:
+    errors: list[str] = []
+    if not SCAD.is_file():
+        errors.append(f"missing SCAD source: {SCAD.relative_to(ROOT)}")
+    if not MANIFEST.is_file():
+        errors.append(f"missing print manifest: {MANIFEST.relative_to(ROOT)}")
+    if not STL_DIR.is_dir():
+        errors.append(f"missing STL dir: {STL_DIR.relative_to(ROOT)}")
+        return errors
+    stls = list_stls()
+    if len(stls) < 15:
+        errors.append(f"too few STLs under cad/stl: {len(stls)}")
+    if MANIFEST.is_file():
+        rows = list(csv.DictReader(MANIFEST.open(encoding="utf-8")))
+        for row in rows:
+            rel = (row.get("file") or "").strip()
+            if not rel:
+                continue
+            path = ROOT / rel
+            if not path.is_file():
+                errors.append(f"manifest missing file: {rel}")
+            status = (row.get("status") or "").strip().lower()
+            if status and status != "reference":
+                errors.append(f"unexpected status for {rel}: {status}")
+    return errors
+
+
+def print_workflow() -> None:
+    print(
+        """
+Robotrola reference CAD workflow
+================================
+Source of truth (parametric, mm):  cad/scad/robotrola_parametric_reference.scad
+Shipped meshes (reference only):   cad/stl/*.stl
+Stage map:                         cad/print_manifest.csv
+
+Export a part with OpenSCAD CLI (example)::
+
+  openscad -o cad/stl/servo_bracket_x_series.stl \\
+    -D 'part="servo_bracket"' \\
+    cad/scad/robotrola_parametric_reference.scad
+
+If your SCAD build does not define a part selector, open the .scad in the
+OpenSCAD GUI, isolate the module, and export STL manually. Keep units in
+millimeters; URDF scales meshes by 0.001 (mm → m).
+
+Honesty:
+  - STLs are NOT load-bearing structure.
+  - Do not regenerate hero marketing images from this tool.
+  - Prefer updating SCAD + re-export over hand-editing binary STLs.
+""".strip()
+    )
+
+
+def try_openscad_help() -> int:
+    openscad = shutil.which("openscad") or shutil.which("OpenSCAD")
+    if not openscad:
+        print("openscad not on PATH — install OpenSCAD to re-export meshes.")
+        print_workflow()
+        return 0
+    # Smoke: openscad can parse the file (syntax). Do not overwrite STLs by default.
+    cmd = [openscad, "-o", "/dev/null", str(SCAD)]
+    # Some OpenSCAD builds require a real output; write to scratch under tools if needed.
+    out = ROOT / "tools" / ".scad_parse_smoke.stl"
+    cmd = [openscad, "-o", str(out), str(SCAD)]
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        print(f"openscad invoke failed: {exc}")
+        print_workflow()
+        return 0
+    if out.exists():
+        out.unlink(missing_ok=True)
+    if r.returncode != 0:
+        print("openscad parse returned non-zero (file may be multi-module GUI-only).")
+        if r.stderr:
+            print(r.stderr[:500])
+        print_workflow()
+        return 0
+    print(f"openscad parsed {SCAD.relative_to(ROOT)} successfully.")
+    print_workflow()
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--list", action="store_true", help="list shipped STLs")
+    p.add_argument("--check", action="store_true", help="validate SCAD + manifest + STLs")
+    p.add_argument(
+        "--openscad-smoke",
+        action="store_true",
+        help="if openscad is installed, try a parse smoke (does not replace STLs)",
+    )
+    args = p.parse_args(argv)
+
+    if args.list:
+        for stl in list_stls():
+            print(stl.relative_to(ROOT))
+        return 0
+
+    if args.check:
+        errs = check_repo()
+        if errs:
+            print("CHECK FAILED:")
+            for e in errs:
+                print(f"  - {e}")
+            return 1
+        print(f"CHECK OK: {len(list_stls())} STLs, SCAD + print_manifest present")
+        return 0
+
+    if args.openscad_smoke:
+        return try_openscad_help()
+
+    # Default: honest guidance + structural check
+    errs = check_repo()
+    print_workflow()
+    if errs:
+        print("\nCHECK FAILED:")
+        for e in errs:
+            print(f"  - {e}")
+        return 1
+    print(f"\nCHECK OK: {len(list_stls())} reference STLs under cad/stl/")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

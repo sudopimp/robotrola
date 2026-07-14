@@ -18,3 +18,5 @@ jobs:
       - run: python scripts/bom_cost_model.py
       - run: python scripts/run_safety_path.py
       - run: python scripts/demo_investor.py
+      - run: python scripts/sim_smoke.py
+      - run: python scripts/check_firmware.py

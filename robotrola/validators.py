@@ -27,8 +27,8 @@ REQUIRED_PATHS = [
     "cad/urdf/robotrola_r01_reference.urdf.xacro",
     "ros2_ws/src/robotrola_description/package.xml",
     "ros2_ws/src/robotrola_description/urdf/robotrola_r01_reference.urdf.xacro",
-    "firmware/micro_ros_safety_esp32/src/main.cpp",
-    "firmware/micro_ros_safety_esp32/include/config.h",
+    "firmware/esp32_safety_mcu/src/main.cpp",
+    "firmware/esp32_safety_mcu/include/config.h",
     "firmware/stm32_dynamixel_bridge/src/main.cpp",
     "firmware/stm32_dynamixel_bridge/include/protocol.h",
     "robotrola/safety.py",
@@ -36,9 +36,21 @@ REQUIRED_PATHS = [
     "robotrola/description.py",
     "robotrola/protocol_sim.py",
     "robotrola/cost_model.py",
+    "robotrola/joint_filter.py",
+    "robotrola/sim_core.py",
+    "robotrola/msgs.py",
+    "robotrola/host_serial.py",
+    "lerobot/v3_layout.py",
     "scripts/demo_investor.py",
     "scripts/bom_cost_model.py",
     "scripts/run_safety_path.py",
+    "scripts/sim_smoke.py",
+    "scripts/check_firmware.py",
+    "ros2_ws/src/robotrola_control/scripts/joint_command_filter_node.py",
+    "ros2_ws/src/robotrola_teleop/scripts/keyboard_teleop_node.py",
+    "ros2_ws/src/robotrola_perception/scripts/camera_config_node.py",
+    "ros2_ws/src/robotrola_msgs/msg/JointCommand.msg",
+    "ros2_ws/src/robotrola_msgs/msg/CommandResult.msg",
 ]
 
 
@@ -71,6 +83,8 @@ def validate_repo(root: str | Path = ".") -> list[str]:
     # Full humanoid description gate
     urdf = root / "cad/urdf/robotrola_r01_reference.urdf.xacro"
     if urdf.exists():
+        from robotrola.description import inertial_coverage, urdf_limits_align_with_safety
+
         info = assert_full_humanoid(urdf)
         if info["revolute_count"] < MIN_HUMANOID_DOF:
             errors.append(f"urdf_dof_too_low:{info['revolute_count']}<{MIN_HUMANOID_DOF}")
@@ -83,6 +97,17 @@ def validate_repo(root: str | Path = ".") -> list[str]:
         for mesh in mesh_filenames(urdf):
             if not (mesh_dir / mesh).exists() and not (root / "cad/stl" / mesh).exists():
                 errors.append(f"mesh_missing:{mesh}")
+        cov = inertial_coverage(urdf)
+        if not cov["ok"]:
+            errors.append(
+                f"urdf_inertial_incomplete:links={cov['link_count']}"
+                f",inertial={cov['inertial_count']},mass={cov['mass_count']}"
+            )
+        align = urdf_limits_align_with_safety(
+            urdf, root / "configs/safety_limits.yaml"
+        )
+        if not align["ok"]:
+            errors.append("urdf_safety_limits_mismatch:" + ",".join(align["mismatches"]))
 
     # joint limits cover neck + a leg + a hand joint
     limits_path = root / "configs/safety_limits.yaml"
@@ -92,8 +117,8 @@ def validate_repo(root: str | Path = ".") -> list[str]:
             if need not in limits:
                 errors.append(f"limits_missing_joint:{need}")
 
-    # firmware protocol markers
-    mcu = root / "firmware/micro_ros_safety_esp32/src/main.cpp"
+    # firmware protocol markers (serial safety MCU — not micro-ROS)
+    mcu = root / "firmware/esp32_safety_mcu/src/main.cpp"
     if mcu.exists():
         src = mcu.read_text(encoding="utf-8")
         for token in ["HEARTBEAT", "RESET", "FAULT", "STATUS", "PIN_ESTOP"]:
@@ -101,6 +126,40 @@ def validate_repo(root: str | Path = ".") -> list[str]:
                 errors.append(f"firmware_missing_token:{token}")
         if len(src.splitlines()) < 80:
             errors.append("firmware_too_thin")
+        # Real micro-ROS / rclc stack would pull these APIs — must not appear here
+        for bad in ("#include <micro_ros", "rclc_support", "rmw_microxrcedds", "rcl_init"):
+            if bad in src:
+                errors.append(f"firmware_unexpected_ros_client_api:{bad}")
+    # Forbid legacy misleading package path
+    if (root / "firmware/micro_ros_safety_esp32").exists():
+        errors.append("legacy_micro_ros_package_path_present")
+
+    # Phase-0+ ROS packages must ship nodes (not empty shells)
+    for rel, needle in [
+        (
+            "ros2_ws/src/robotrola_control/scripts/joint_command_filter_node.py",
+            "JointCommandFilter",
+        ),
+        (
+            "ros2_ws/src/robotrola_teleop/scripts/keyboard_teleop_node.py",
+            "joint_command_json",
+        ),
+    ]:
+        p = root / rel
+        if p.is_file():
+            txt = p.read_text(encoding="utf-8", errors="replace")
+            if needle not in txt:
+                errors.append(f"ros_node_thin:{rel}")
+            if len(txt.splitlines()) < 30:
+                errors.append(f"ros_node_too_short:{rel}")
+
+    for pkg_xml in [
+        "ros2_ws/src/robotrola_control/package.xml",
+        "ros2_ws/src/robotrola_teleop/package.xml",
+    ]:
+        px = root / pkg_xml
+        if px.is_file() and "stub" in px.read_text(encoding="utf-8").lower():
+            errors.append(f"ros_package_still_stub:{pkg_xml}")
 
     bridge = root / "firmware/stm32_dynamixel_bridge/src/main.cpp"
     if bridge.exists():

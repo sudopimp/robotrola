@@ -91,3 +91,90 @@ def assert_full_humanoid(urdf_path: str | Path = DEFAULT_URDF) -> dict:
 def mesh_filenames(urdf_path: str | Path = DEFAULT_URDF) -> list[str]:
     text = Path(urdf_path).read_text(encoding="utf-8")
     return sorted(set(re.findall(r"/([A-Za-z0-9_]+\.stl)", text)))
+
+
+_INERTIAL_RE = re.compile(r"<inertial\b", re.I)
+_MASS_RE = re.compile(r'<mass\s+value="([^"]+)"')
+
+
+def parse_link_names(urdf_path: str | Path = DEFAULT_URDF) -> list[str]:
+    """Return unique link names in document order."""
+    text = Path(urdf_path).read_text(encoding="utf-8")
+    names: list[str] = []
+    seen: set[str] = set()
+    for m in re.finditer(r'<link\s+name="([^"]+)"', text):
+        name = m.group(1)
+        if name not in seen:
+            seen.add(name)
+            names.append(name)
+    return names
+
+
+def inertial_coverage(urdf_path: str | Path = DEFAULT_URDF) -> dict:
+    """Count links vs inertial/mass blocks in the shipped URDF (real file parse)."""
+    text = Path(urdf_path).read_text(encoding="utf-8")
+    links = parse_link_names(urdf_path)
+    inertial_n = len(_INERTIAL_RE.findall(text))
+    masses = [float(x) for x in _MASS_RE.findall(text)]
+    return {
+        "link_count": len(links),
+        "inertial_count": inertial_n,
+        "mass_count": len(masses),
+        "masses": masses,
+        "links": links,
+        "ok": inertial_n >= len(links)
+        and len(masses) >= len(links)
+        and all(m > 0 for m in masses)
+        and inertial_n > 0,
+    }
+
+
+def urdf_limits_align_with_safety(
+    urdf_path: str | Path = DEFAULT_URDF,
+    limits_path: str | Path | None = None,
+    core_joints: tuple[str, ...] = (
+        "neck_yaw",
+        "left_knee",
+        "right_index_curl",
+        "waist_yaw",
+        "left_shoulder_pitch",
+        "right_hip_pitch",
+    ),
+) -> dict:
+    """Compare revolute URDF limit tags to configs/safety_limits.yaml for core joints.
+
+    Drives the shipped files — does not re-implement limit policy.
+    """
+    import yaml
+
+    if limits_path is None:
+        limits_path = ROOT / "configs" / "safety_limits.yaml"
+    limits = yaml.safe_load(Path(limits_path).read_text(encoding="utf-8")).get(
+        "joint_limits", {}
+    )
+    revs = {j.name: j for j in revolute_joints(urdf_path)}
+    mismatches: list[str] = []
+    checked: list[str] = []
+    for name in core_joints:
+        if name not in revs:
+            mismatches.append(f"urdf_missing:{name}")
+            continue
+        if name not in limits:
+            mismatches.append(f"safety_missing:{name}")
+            continue
+        j = revs[name]
+        lim = limits[name]
+        checked.append(name)
+        if j.lower is None or abs(j.lower - float(lim["position_min_rad"])) > 1e-9:
+            mismatches.append(f"{name}:lower")
+        if j.upper is None or abs(j.upper - float(lim["position_max_rad"])) > 1e-9:
+            mismatches.append(f"{name}:upper")
+        if j.velocity is None or abs(j.velocity - float(lim["velocity_max_rad_s"])) > 1e-9:
+            mismatches.append(f"{name}:velocity")
+        if j.effort is None or abs(j.effort - float(lim["effort_max_nm"])) > 1e-9:
+            mismatches.append(f"{name}:effort")
+    return {
+        "checked": checked,
+        "mismatches": mismatches,
+        "ok": not mismatches and len(checked) == len(core_joints),
+    }

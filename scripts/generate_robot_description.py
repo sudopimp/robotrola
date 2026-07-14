@@ -1,11 +1,73 @@
 #!/usr/bin/env python3
-"""Generate full R-01 humanoid URDF + joint limits from the joint map (single source)."""
+"""Generate full R-01 humanoid URDF + joint limits from the joint map (single source).
+
+Also emits **estimated** ``<inertial>`` blocks for every link (engineering
+placeholders for sim scaffolding — not measured hardware mass). See
+``docs/CLAIMS_MATRIX.md``.
+"""
 from __future__ import annotations
 
 from pathlib import Path
-import textwrap
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def estimated_inertia(link_name: str) -> tuple[float, float, float, float]:
+    """Return (mass_kg, ixx, iyy, izz) engineering estimates by link role.
+
+    Diagonal inertia only (kg·m²). Values are order-of-magnitude research
+    placeholders so gazebo/mujoco import is possible before hardware weighing.
+    """
+    n = link_name.lower()
+    # (mass, ixx, iyy, izz)
+    if n == "base_link":
+        return 0.01, 1e-5, 1e-5, 1e-5
+    if "pelvis" in n:
+        return 8.0, 0.08, 0.06, 0.05
+    if "waist" in n:
+        return 2.5, 0.02, 0.015, 0.012
+    if "torso" in n:
+        return 6.0, 0.10, 0.08, 0.05
+    if "head" in n:
+        return 1.2, 0.008, 0.008, 0.006
+    if "neck" in n:
+        return 0.4, 0.001, 0.001, 0.0008
+    if "shoulder" in n or "upper_arm" in n:
+        return 1.8, 0.012, 0.012, 0.004
+    if "forearm" in n:
+        return 1.0, 0.006, 0.006, 0.002
+    if "wrist" in n:
+        return 0.25, 0.0004, 0.0004, 0.0002
+    if "hand" in n:
+        return 0.35, 0.0008, 0.0008, 0.0004
+    if any(f in n for f in ("thumb", "index", "middle", "ring", "pinky")):
+        return 0.05, 5e-5, 5e-5, 2e-5
+    if "hip" in n:
+        return 1.5, 0.01, 0.01, 0.005
+    if "thigh" in n:
+        return 4.0, 0.04, 0.04, 0.01
+    if "shin" in n or "knee" in n:
+        return 2.5, 0.02, 0.02, 0.006
+    if "ankle" in n:
+        return 0.4, 0.001, 0.001, 0.0005
+    if "foot" in n:
+        return 0.8, 0.004, 0.004, 0.001
+    if any(x in n for x in ("camera", "electronics", "battery", "estop", "hygiene", "beverage")):
+        return 0.3, 0.001, 0.001, 0.001
+    return 0.5, 0.002, 0.002, 0.001
+
+
+def inertial_xml(link_name: str, indent: str = "    ") -> list[str]:
+    mass, ixx, iyy, izz = estimated_inertia(link_name)
+    return [
+        f"{indent}<!-- ESTIMATED inertia (not measured hardware) -->",
+        f"{indent}<inertial>",
+        f"{indent}  <origin xyz=\"0 0 0\" rpy=\"0 0 0\"/>",
+        f"{indent}  <mass value=\"{mass}\"/>",
+        f"{indent}  <inertia ixx=\"{ixx}\" ixy=\"0\" ixz=\"0\" iyy=\"{iyy}\" iyz=\"0\" izz=\"{izz}\"/>",
+        f"{indent}</inertial>",
+    ]
+
 
 # 42 DOF humanoid map: (name, parent, child, origin_xyz, axis, lower, upper, effort, velocity, mesh)
 # mesh may be None for pure kinematic links
@@ -80,8 +142,12 @@ def write_urdf(path: Path, package_meshes: bool) -> int:
         '<robot name="robotrola_r01" xmlns:xacro="http://www.ros.org/wiki/xacro">',
         f'  <xacro:property name="mesh_prefix" value="{mesh_prefix}" />',
         '  <!-- Robotrola R-01 full-body research description: 42 revolute DOF -->',
-        '  <link name="base_link"/>',
+        '  <!-- Inertial blocks are ESTIMATED (engineering placeholders), not measured hardware. -->',
+        '  <link name="base_link">',
+        *inertial_xml("base_link"),
+        '  </link>',
         '  <link name="pelvis_link">',
+        *inertial_xml("pelvis_link"),
         '    <visual><geometry><mesh filename="${mesh_prefix}/pelvis_frame.stl" scale="0.001 0.001 0.001"/></geometry></visual>',
         '    <collision><geometry><box size="0.25 0.2 0.12"/></geometry></collision>',
         '  </link>',
@@ -97,16 +163,15 @@ def write_urdf(path: Path, package_meshes: bool) -> int:
         if name in created_links:
             return
         created_links.add(name)
+        lines.append(f'  <link name="{name}">')
+        lines.extend(inertial_xml(name))
         if mesh:
-            lines.append(f'  <link name="{name}">')
             lines.append(
                 f'    <visual><geometry><mesh filename="${{mesh_prefix}}/{mesh}" '
                 f'scale="0.001 0.001 0.001"/></geometry></visual>'
             )
             lines.append('    <collision><geometry><cylinder radius="0.04" length="0.08"/></geometry></collision>')
-            lines.append('  </link>')
-        else:
-            lines.append(f'  <link name="{name}"/>')
+        lines.append('  </link>')
 
     for jd in joints:
         ensure_link(jd["parent"], None if jd["parent"] == "pelvis_link" else None)

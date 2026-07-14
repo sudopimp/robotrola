@@ -1,6 +1,7 @@
 PYTHON ?= python3
 
-.PHONY: test validate bom bom-cost safety-path demo description cad-catalog diligence zip
+.PHONY: test validate bom bom-cost safety-path demo description cad-catalog \
+	diligence zip sim-smoke firmware firmware-build phase0
 
 test:
 	$(PYTHON) -m pytest -q
@@ -20,7 +21,19 @@ safety-path:
 demo:
 	$(PYTHON) scripts/demo_investor.py
 
-diligence: test validate bom-cost safety-path demo
+sim-smoke:
+	$(PYTHON) scripts/sim_smoke.py
+
+firmware:
+	$(PYTHON) scripts/check_firmware.py
+
+firmware-build:
+	$(PYTHON) scripts/check_firmware.py --build
+
+# Phase-0+ software bar (no hardware, no ROS install required)
+phase0: test validate sim-smoke firmware demo
+
+diligence: test validate bom-cost safety-path demo sim-smoke firmware
 
 description:
 	$(PYTHON) scripts/generate_robot_description.py

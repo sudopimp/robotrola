@@ -1,4 +1,7 @@
-"""LeRobot-compatible episode writer for Robotrola.
+"""LeRobot-style JSON episode scaffold for Robotrola.
+
+This is **not** full Hugging Face LeRobotDataset v3 (Parquet + MP4 + Hub).
+It writes a simple JSON episode for diligence and bench logging.
 
 Does not control hardware. Only records frames that were already safety-approved
 (or explicitly marked as rejected for dataset negatives).

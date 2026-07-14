@@ -13,6 +13,15 @@ def test_claims_matrix_sections():
         assert h in text
     assert "42" in text
     assert "certified" in text.lower() or "Not claimed" in text
+    # Honesty locks (S1 anti-theater)
+    assert "esp32_safety_mcu" in text
+    assert "scaffold" in text.lower()
+    assert "mass/inertia" in text.lower() or "inertial" in text.lower()
+    assert "estimated" in text.lower()
+    assert "v3-layout" in text.lower() or "v3-layout" in text
+    assert "sim smoke" in text.lower() or "sim_smoke" in text
+    assert "joint" in text.lower() and "filter" in text.lower()
+    assert "micro-ROS" in text  # mentioned as not claimed / not implemented
 
 
 def test_investor_brief_exists():
@@ -21,7 +30,8 @@ def test_investor_brief_exists():
     assert "not" in text.lower() and "certified" in text.lower()
     assert "demo_investor" in text or "demo_investor.py" in text
     assert "BOM" in text or "bom" in text
-
+    assert "estimated" in text.lower() or "ESTIMATED" in text
+    assert "scaffold" in text.lower()
 
 def test_spec_has_verify_hints():
     text = (ROOT / "SPEC.md").read_text(encoding="utf-8")
@@ -51,3 +61,15 @@ def test_readme_points_to_claims_and_demo():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "CLAIMS_MATRIX" in readme
     assert "demo_investor" in readme
+    assert "esp32_safety_mcu" in readme
+    assert "LICENSE_SOFTWARE" in readme and "LICENSE_HARDWARE" in readme
+    assert (ROOT / "LICENSE").is_file()
+    assert "scaffold" in readme.lower()
+
+
+def test_tools_have_no_bootstrap_host_paths():
+    tools = ROOT / "tools"
+    for path in tools.rglob("*"):
+        if path.is_file() and path.suffix in {".py", ".md", ".sh"}:
+            text = path.read_text(encoding="utf-8", errors="replace")
+            assert "/mnt/data" not in text, path

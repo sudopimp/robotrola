@@ -6,7 +6,7 @@
 - ROS 2 Jazzy for stable middleware.
 - Gazebo Jetty/Harmonic-compatible simulation configs.
 - Isaac Sim / Isaac Lab optional for GPU-based digital twin and synthetic data.
-- LeRobot-compatible datasets for demonstrations and policies.
+- LeRobot-style episode logging first (JSON scaffold today; Dataset v3 later).
 - MoveIt 2 for manipulation planning.
 - Jetson AGX Thor/T5000-class compute for humanoid/physical-AI experiments; Orin Nano/Orin NX as lower-cost dev alternatives.
 - RealSense D455 + Orbbec RGB-D support to avoid single-vendor perception lock-in.

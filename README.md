@@ -6,11 +6,12 @@
 
 <p align="center">
   <strong>Complete open research platform for a safety-first adult companion humanoid</strong><br/>
-  42-DOF description · printable CAD · BOM · layered safety · MCU firmware · ROS 2 · LeRobot path
+  42-DOF description · printable CAD · BOM · layered safety · MCU firmware · ROS 2 · learning data scaffold
 </p>
 
 <p align="center">
   <a href="https://github.com/sudopimp/robotrola/actions"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/sudopimp/robotrola/ci.yml?branch=main&style=flat-square&label=CI" /></a>
+  <a href="LICENSE"><img alt="Dual license" src="https://img.shields.io/badge/license-Apache%202.0%20%2B%20CERN--OHL--S%202.0-blue?style=flat-square" /></a>
   <a href="LICENSE_SOFTWARE"><img alt="Software license" src="https://img.shields.io/badge/software-Apache%202.0-blue?style=flat-square" /></a>
   <a href="LICENSE_HARDWARE"><img alt="Hardware license" src="https://img.shields.io/badge/hardware-CERN--OHL--S%202.0-blue?style=flat-square" /></a>
   <a href="docs/CLAIMS_MATRIX.md"><img alt="Claims" src="https://img.shields.io/badge/claims-matrix-important?style=flat-square" /></a>
@@ -45,11 +46,12 @@ Robotrola Core is that stack for a **non-explicit, privacy-first, adult-only** r
 
 | You get today | You do **not** get |
 |---|---|
-| 42-DOF full-body URDF + joint limits | CE / UL / ISO cobot certification |
+| 42-DOF full-body URDF + joint limits + **estimated** inertias | CE / UL / ISO cobot certification |
 | Runnable pure-Python safety path | Factory SKU or walking policy weights |
-| Real ESP32 + STM32 bridge firmware sources | Load-bearing proof of every STL |
-| BOM + stage cost bands (USD) | Retail “companion product” claims |
-| Thin ROS 2 packages + LeRobot episode writer | Cloud brain by default |
+| Real ESP32 serial safety MCU + STM32 bridge firmware sources | micro-ROS / XRCE-DDS on the safety MCU |
+| BOM + stage cost bands (USD) | Load-bearing proof of every STL |
+| ROS 2 **nodes** (filter/teleop) + joint filter + sim smoke | Physics digital twin or cloud brain by default |
+| LeRobot JSON scaffold + **v3-layout** export | Full Hub LeRobotDataset v3 (videos/streaming) |
 
 ---
 
@@ -173,16 +175,16 @@ python scripts/bom_cost_model.py
 
 ---
 
-## Stack (SOTA 2026 target)
+## Stack (research target)
 
 | Layer | Choice |
 |---|---|
-| Middleware | ROS 2 Jazzy |
-| Learning data | LeRobot-compatible episodes |
+| Middleware | ROS 2 Jazzy — safety + joint filter + teleop + camera-config nodes |
+| Learning data | JSON scaffold + local **v3-layout** export (Hub/videos lab-next) |
 | Edge AI | Jetson AGX Thor / T5000 class (Orin OK for bench) |
-| Sim | Gazebo + Isaac Sim / Lab |
+| Sim | Joint-space sim smoke shipped; Gazebo/Isaac physics optional |
 | Actuation | DYNAMIXEL X-series (+ custom actuator R&D fixtures) |
-| Safety | E-stop, deadman, watchdog, joint limits, feature flags |
+| Safety | E-stop, deadman, watchdog, joint limits, feature flags, joint filter |
 | Privacy | Local-first voice/logs; cloud off by default |
 
 ---
@@ -193,7 +195,13 @@ python scripts/bom_cost_model.py
 
 ```bash
 pip install -e ".[dev]"
-make diligence          # full gate used in CI
+make diligence          # pytest + validate + BOM + safety + demo + sim_smoke + firmware
+make phase0             # shorter Phase-0+ bar
+```
+
+```bash
+python scripts/sim_smoke.py       # SIM_SMOKE_OK
+python scripts/check_firmware.py  # FIRMWARE_CHECK_OK
 ```
 
 ### ROS 2 (optional)
@@ -204,16 +212,21 @@ cd ros2_ws
 rosdep install --from-paths src --ignore-src -r -y
 colcon build --symlink-install && source install/setup.bash
 ros2 launch robotrola_safety safety.launch.py
+ros2 launch robotrola_control filter.launch.py
+# teleop publishes JSON joint cmds → filter / safety nodes
+ros2 run robotrola_teleop keyboard_teleop_node.py
 ```
 
-The safety node **delegates** to the same `robotrola.safety` library as pure Python.
+All motion nodes **delegate** to `robotrola.joint_filter` / `robotrola.safety` (same as pure Python).
 
 ### Firmware
 
 ```bash
-cd firmware/micro_ros_safety_esp32 && pio run     # HEARTBEAT / RESET / FAULT / STATUS
+cd firmware/esp32_safety_mcu && pio run     # serial HEARTBEAT / RESET / FAULT / STATUS (not micro-ROS)
 cd firmware/stm32_dynamixel_bridge && pio run -e stm32_bridge
 ```
+
+The ESP32 package is a **line-oriented serial safety MCU** (contactor / e-stop / watchdog). It is **not** a micro-ROS client.
 
 Host-side protocol mirror for tests: `robotrola/protocol_sim.py`.
 
@@ -263,6 +276,8 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md). PRs need design intent, risk impact, t
 Report privately per [`SECURITY.md`](SECURITY.md). Default posture: local-first, no remote actuation.
 
 ## License
+
+**Dual license.** Start at [`LICENSE`](LICENSE) (pointer), then:
 
 | Tree | License |
 |---|---|

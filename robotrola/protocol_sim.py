@@ -1,6 +1,6 @@
 """Host-side simulator of the safety MCU serial protocol.
 
-Mirrors firmware/micro_ros_safety_esp32 behavior enough for unit tests and
+Mirrors firmware/esp32_safety_mcu behavior enough for unit tests and
 investor demos without flashing hardware. Not a cycle-accurate emulator.
 """
 from __future__ import annotations

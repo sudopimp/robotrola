@@ -1,0 +1,12 @@
+Robotrola Core uses dual licensing:
+
+1. Software (Python package, scripts, ROS packages, firmware sources, tests)
+   → see LICENSE_SOFTWARE (Apache License 2.0)
+
+2. Hardware documentation and CAD (cad/, hardware/, mechanical docs)
+   → see LICENSE_HARDWARE (CERN Open Hardware Licence Version 2 - Strongly Reciprocal)
+
+Brand / visual reference images under assets/ are project assets; replace with
+owned or commissioned media for commercial use.
+
+See NOTICE and README.md § License for the tree split.

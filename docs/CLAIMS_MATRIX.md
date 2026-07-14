@@ -7,18 +7,23 @@ Use this document in diligence. If a claim is not listed under **Proven today**,
 | Claim | Evidence |
 |---|---|
 | Full-body kinematic description (42 revolute DOF: head, torso, arms, hands, legs, feet) | `cad/urdf/…`, `configs/robot_description/joints.yaml`, `pytest` DOF gates |
+| Estimated mass/inertia on URDF links (engineering estimates, not measured hardware) | `<inertial>` in `cad/urdf/…`, `scripts/generate_robot_description.py`, completeness tests |
 | Joint limit safety supervisor rejects over-speed / out-of-range / wrong-mode commands | `robotrola/safety.py`, `tests/test_safety.py`, `scripts/run_safety_path.py` |
 | Deterministic pure-Python command path (arm → activate → approve/reject) | `robotrola/command_path.py`, dual-run demo |
-| Safety MCU serial protocol implemented in firmware source (not README-only) | `firmware/micro_ros_safety_esp32/src/main.cpp` HEARTBEAT/RESET/FAULT/STATUS |
+| Shared **joint command filter** used by demos and ROS nodes | `robotrola/joint_filter.py`, `tests/test_phase0_plus.py` |
+| Safety MCU **serial** protocol implemented in firmware source (not README-only; not micro-ROS) | `firmware/esp32_safety_mcu/src/main.cpp` HEARTBEAT/RESET/FAULT/STATUS |
 | Motor-bridge host protocol + local clamps in firmware source | `firmware/stm32_dynamixel_bridge/src/main.cpp` |
-| Host-side protocol simulator matches safety MCU command set | `robotrola/protocol_sim.py`, `tests/test_protocol_sim.py` |
+| Host-side protocol simulator + host_serial token lockstep | `robotrola/protocol_sim.py`, `robotrola/host_serial.py`, `scripts/check_firmware.py` |
+| Firmware package structure gate (`make firmware`) | `scripts/check_firmware.py` → `FIRMWARE_CHECK_OK` |
 | BOM with critical risk items + category coverage | `hardware/BOM.csv`, validator |
 | Print manifest maps parts to bench / upper_body / full_body stages | `cad/print_manifest.csv` |
 | Stage cost bands (low–high USD) derived from BOM text ranges | `scripts/bom_cost_model.py` |
 | Dangerous features off by default | `configs/feature_flags.yaml`, validator |
-| LeRobot-compatible episode writer only accepts safety-approved path | `lerobot/`, `tests/test_lerobot_path.py` |
-| Repo self-validation + CI hooks | `scripts/validate_repo.py`, `.github/workflows/ci.yml` |
-| Thin ROS 2 safety node that **delegates** to the same Python library | `ros2_ws/src/robotrola_safety/scripts/safety_supervisor_node.py` |
+| LeRobot-style **JSON episode scaffold** + **v3-layout export** (meta + jsonl; parquet if pyarrow) | `lerobot/robotrola_lerobot_adapter.py`, `lerobot/v3_layout.py` — **not** Hub upload |
+| Hardware-free **sim smoke** (joint trajectory under safety filter) | `robotrola/sim_core.py`, `scripts/sim_smoke.py` → `SIM_SMOKE_OK` |
+| ROS 2 packages with **real nodes**: safety, joint filter, teleop, camera-config | `ros2_ws/src/robotrola_{safety,control,teleop,perception}/scripts/` |
+| Typed message definitions (JointCommand, CommandResult, SafetyState, …) | `ros2_ws/src/robotrola_msgs/msg/` |
+| Repo self-validation + CI (pytest, validate, sim_smoke, firmware check, demo) | `scripts/validate_repo.py`, `.github/workflows/ci.yml` |
 
 ## Lab next (designed, not yet proven on metal)
 
@@ -28,10 +33,13 @@ Use this document in diligence. If a claim is not listed under **Proven today**,
 | One DYNAMIXEL on fixture tracks approved goals under bridge clamps | `docs/builds/01_one_actuator_fixture.md` |
 | Upper-body stand teleop with force/speed limits measured | `docs/builds/02_upper_body_stand.md` |
 | Full-body research rig / biped in cage | `docs/builds/03_full_body_research_rig.md` |
-| Measured mass/inertia in URDF from physical robot | Gap 1 in `docs/research/gap_closure_plan.md` |
+| **Measured** mass/inertia in URDF from physical robot (replace estimates) | Gap 1 in `docs/research/gap_closure_plan.md` |
+| Full Hugging Face Hub LeRobotDataset v3 (videos + stats + streaming) | Local v3-layout only; no Hub publish |
+| `colcon build` CI on ROS Jazzy image + runtime rostest | Nodes ship; optional ROS CI not required for pure-Python diligence |
+| PlatformIO compile in CI (needs pio + board packages) | `make firmware-build` when pio installed |
+| Gazebo/MuJoCo/Isaac full digital twin correlation | Sim smoke is joint-space filter, not physics twin |
 | Trained imitation policy on Robotrola hardware | Gap 5 — collect data first |
 | Battery pack thermal envelope under load | Gap 6 — start with bench PSU |
-| Gazebo/Isaac full digital twin correlation | Simulation notes exist; no sim success claimed without install |
 
 ## Not claimed (do not say this in a pitch)
 
@@ -44,7 +52,9 @@ Use this document in diligence. If a claim is not listed under **Proven today**,
 | Cloud multi-user SaaS brain | Local-first by design; cloud flag off |
 | Legal advice product / medical device | Companion research + contact-router docs only; not a regulated product |
 | STL shells are load-bearing structure | Explicitly **not** — metal frame required for loads |
+| micro-ROS / XRCE-DDS on the safety MCU | Serial line protocol only (`firmware/esp32_safety_mcu`) |
+| Physics-accurate digital twin | Sim smoke ≠ Gazebo/MuJoCo validated plant model |
 
 ## One-line pitch-safe summary
 
-> Robotrola Core is a **complete open research humanoid build package**: 42-DOF description, printable reference CAD, BOM with stage cost bands, layered safety software, and real MCU/bridge firmware protocols—engineered so a lab can go bench → upper body → full body without starting from a slide deck. It is **not** a certified consumer product.
+> Robotrola Core is a **Phase-0+ open research humanoid package**: 42-DOF description with estimated inertias, printable reference CAD, BOM stage costs, layered safety + joint filter, serial MCU/bridge firmware, ROS nodes that delegate to the same Python library, hardware-free sim smoke, and a LeRobot v3-**layout** export — so a lab can go bench → upper body → full body without starting from a slide deck. It is **not** a certified consumer product or a trained walking robot.

@@ -9,7 +9,7 @@ Goal: validate a single motor/joint safely before attaching it to a body.
 3. Wire through safety MCU-controlled power.
 4. Set velocity and current limits below expected final values.
 5. Run thermal and fault tests.
-6. Record data into LeRobot-compatible episode format.
+6. Record data into the LeRobot-style JSON episode scaffold.
 
 ## Acceptance criteria
 

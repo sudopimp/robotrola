@@ -6,6 +6,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/SafetyState.msg"
   "msg/FeatureCommand.msg"
   "msg/JointLimit.msg"
+  "msg/JointCommand.msg"
+  "msg/CommandResult.msg"
 )
 ament_export_dependencies(rosidl_default_runtime)
 ament_package()

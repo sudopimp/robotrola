@@ -6,7 +6,7 @@ Default posture: local-first, no cloud actuation.
 
 - perception: RGB-D driver + YOLO11/segmentation/pose estimation
 - speech: local ASR/TTS with no always-on recording
-- policy learning: LeRobot-compatible imitation learning
+- policy learning: imitation learning on recorded episodes (JSON scaffold today)
 - high-level planning: local planner that proposes tasks only
 - safety: deterministic supervisor and MCU gates, not AI
 

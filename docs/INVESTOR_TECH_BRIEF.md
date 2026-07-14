@@ -46,6 +46,7 @@ AI never owns current. Safety MCU owns power isolation independently of Linux/RO
 
 - **42 revolute DOF** full body (waist, neck, 2× arm+hand, 2× leg)
 - URDF/xacro + joint map YAML + safety limits YAML generated together
+- **Estimated** mass/inertia on links (not measured hardware — lab-next to replace)
 - Mesh references map to shipped STL reference set
 - Planar arm FK helper for fixture-level explanations
 
@@ -63,11 +64,11 @@ Critical-risk lines (battery, contactor, e-stop, deadman) are named in BOM and c
 
 | Piece | Role |
 |---|---|
-| `robotrola/` | Safety, command path, description, validators, protocol sim, cost model |
-| `ros2_ws/` | Thin ROS 2 wrappers; safety node **imports same library** |
-| `lerobot/` | Episode writer schema-compatible with LeRobot-style datasets |
-| `simulation/` | Gazebo/Isaac hooks — optional; not required for core gates |
-| `firmware/` | Real serial protocols for safety MCU + DXL bridge |
+| `robotrola/` | Safety, joint filter, command path, sim_core, protocol sim, cost model |
+| `ros2_ws/` | ROS 2 **nodes** (safety, control filter, teleop, camera-config) over same library |
+| `lerobot/` | JSON scaffold + **v3-layout** export (local meta/data; not Hub) |
+| `simulation/` | Joint-space sim smoke shipped; Gazebo/Isaac physics optional |
+| `firmware/` | Real **serial** protocols for safety MCU + DXL bridge (not micro-ROS) |
 
 ## Competitive / positioning honesty
 

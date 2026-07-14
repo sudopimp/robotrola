@@ -5,12 +5,24 @@
 - [x] Reference printable CAD + print manifest stages (bench / upper_body / full_body)
 - [x] BOM and harness maps
 - [x] Safety and privacy plan
-- [x] Full-body 42-DOF URDF + joint limits + mesh wiring
+- [x] Full-body 42-DOF URDF + joint limits + mesh wiring + **estimated inertias**
 - [x] Pure-Python safety supervisor + command path (`scripts/run_safety_path.py`)
-- [x] ROS 2 packages with thin safety node (delegates to Python library)
-- [x] Safety MCU firmware protocol (HEARTBEAT/RESET/FAULT/STATUS)
-- [x] STM32 DYNAMIXEL bridge firmware sources (not README-only)
-- [x] Completeness tests + `validate_repo` gates + CI hooks
+- [x] Shared joint command filter (`robotrola/joint_filter.py`)
+- [x] ROS 2 packages with **real nodes**: safety, control filter, teleop, camera-config
+- [x] Typed `robotrola_msgs` (JointCommand, CommandResult, SafetyState, …)
+- [x] Safety MCU serial firmware (`firmware/esp32_safety_mcu`, not micro-ROS)
+- [x] STM32 DYNAMIXEL bridge firmware sources
+- [x] Firmware structure gate (`make firmware` / `scripts/check_firmware.py`)
+- [x] Hardware-free sim smoke (`scripts/sim_smoke.py`)
+- [x] LeRobot JSON scaffold + v3-**layout** export (`lerobot/v3_layout.py`)
+- [x] Completeness tests + `validate_repo` + CI (pytest, sim_smoke, firmware check)
+
+## Phase 0.5 — Software hardening (next)
+- [ ] Optional CI job: `colcon build` on ROS 2 Jazzy container
+- [ ] Optional CI: PlatformIO compile (`make firmware-build`)
+- [ ] MuJoCo or Gazebo model load + single-joint physics smoke
+- [ ] Official `lerobot` package adapter + Hub push docs
+- [ ] Host USB serial client against real MCU (protocol already mirrored)
 
 ## Phase 1 — Bench prototype (physical)
 - [ ] Print non-load-bearing reference parts
@@ -18,7 +30,7 @@
 - [ ] Flash/validate safety MCU, e-stop, watchdog, power cut on hardware
 - [ ] Validate one DYNAMIXEL actuator on fixture via motor bridge
 - [ ] Run perception node with RGB-D camera
-- [ ] Record LeRobot-compatible bench dataset
+- [ ] Record LeRobot-style bench episodes (v3-layout → Hub later)
 
 ## Phase 2 — Upper-body test rig
 - [ ] Head/neck, torso, arms on fixed stand

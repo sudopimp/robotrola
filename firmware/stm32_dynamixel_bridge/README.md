@@ -26,7 +26,7 @@ Motion is rejected unless **safety path + host heartbeat** are healthy.
 
 ## Bring-up order
 
-1. Validate `firmware/micro_ros_safety_esp32` contactor path on the bench.
+1. Validate `firmware/esp32_safety_mcu` contactor path on the bench.
 2. Wire safety contactor-enable mirror into `PIN_SAFETY_OK`.
 3. Flash bridge with `pio run -e stm32_bridge` (protocol-only) or
    `pio run -e stm32_bridge_dxl` with Dynamixel2Arduino + bus wiring.

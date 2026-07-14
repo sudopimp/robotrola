@@ -30,5 +30,7 @@ Leé `SAFETY.md` y `DISCLAIMER.md` antes de cualquier prueba con personas.
 
 ## Licencias
 
+Doble licencia — ver `LICENSE` (índice):
+
 - Software: Apache-2.0 (`LICENSE_SOFTWARE`)
 - Hardware/CAD: CERN-OHL-S-2.0 (`LICENSE_HARDWARE`)
