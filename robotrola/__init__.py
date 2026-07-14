@@ -1,5 +1,5 @@
 """Robotrola Core — complete open research platform helpers."""
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 
 from robotrola.safety import SafetySupervisor, SafetyInputs, JointCommand, SafetyMode
 from robotrola.command_path import Platform, demo_safe_path

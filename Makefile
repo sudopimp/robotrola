@@ -1,7 +1,8 @@
 PYTHON ?= python3
 
 .PHONY: test validate bom bom-cost safety-path demo description cad-catalog \
-	diligence zip sim-smoke firmware firmware-build phase0
+	diligence zip sim-smoke firmware firmware-build phase0 phase05 \
+	host-clients mujoco-smoke
 
 test:
 	$(PYTHON) -m pytest -q
@@ -24,6 +25,12 @@ demo:
 sim-smoke:
 	$(PYTHON) scripts/sim_smoke.py
 
+host-clients:
+	$(PYTHON) scripts/host_serial_demo.py
+
+mujoco-smoke:
+	$(PYTHON) scripts/sim_mujoco_smoke.py
+
 firmware:
 	$(PYTHON) scripts/check_firmware.py
 
@@ -33,7 +40,10 @@ firmware-build:
 # Phase-0+ software bar (no hardware, no ROS install required)
 phase0: test validate sim-smoke firmware demo
 
-diligence: test validate bom-cost safety-path demo sim-smoke firmware
+# Phase 0.5: host clients + MuJoCo export scaffold
+phase05: phase0 host-clients mujoco-smoke
+
+diligence: test validate bom-cost safety-path demo sim-smoke firmware host-clients mujoco-smoke
 
 description:
 	$(PYTHON) scripts/generate_robot_description.py

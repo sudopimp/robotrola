@@ -21,9 +21,12 @@ Use this document in diligence. If a claim is not listed under **Proven today**,
 | Dangerous features off by default | `configs/feature_flags.yaml`, validator |
 | LeRobot-style **JSON episode scaffold** + **v3-layout export** (meta + jsonl; parquet if pyarrow) | `lerobot/robotrola_lerobot_adapter.py`, `lerobot/v3_layout.py` — **not** Hub upload |
 | Hardware-free **sim smoke** (joint trajectory under safety filter) | `robotrola/sim_core.py`, `scripts/sim_smoke.py` → `SIM_SMOKE_OK` |
+| Host serial **clients** for safety MCU + bridge (sim default; optional pyserial) | `robotrola/host_client.py`, `scripts/host_serial_demo.py` → `HOST_CLIENTS_OK` |
+| MuJoCo **MJCF research export** (scaffold; load optional if `mujoco` installed) | `scripts/export_mujoco_model.py`, `simulation/mujoco/robotrola_r01_research.xml` |
 | ROS 2 packages with **real nodes**: safety, joint filter, teleop, camera-config | `ros2_ws/src/robotrola_{safety,control,teleop,perception}/scripts/` |
 | Typed message definitions (JointCommand, CommandResult, SafetyState, …) | `ros2_ws/src/robotrola_msgs/msg/` |
-| Repo self-validation + CI (pytest, validate, sim_smoke, firmware check, demo) | `scripts/validate_repo.py`, `.github/workflows/ci.yml` |
+| Repo self-validation + CI (pytest, validate, sim_smoke, firmware check, host clients, mujoco export, demo) | `scripts/validate_repo.py`, `.github/workflows/ci.yml` |
+| Optional CI workflows: PlatformIO firmware build + ROS colcon | `.github/workflows/firmware-optional.yml`, `ros-optional.yml` |
 
 ## Lab next (designed, not yet proven on metal)
 
@@ -35,9 +38,9 @@ Use this document in diligence. If a claim is not listed under **Proven today**,
 | Full-body research rig / biped in cage | `docs/builds/03_full_body_research_rig.md` |
 | **Measured** mass/inertia in URDF from physical robot (replace estimates) | Gap 1 in `docs/research/gap_closure_plan.md` |
 | Full Hugging Face Hub LeRobotDataset v3 (videos + stats + streaming) | Local v3-layout only; no Hub publish |
-| `colcon build` CI on ROS Jazzy image + runtime rostest | Nodes ship; optional ROS CI not required for pure-Python diligence |
-| PlatformIO compile in CI (needs pio + board packages) | `make firmware-build` when pio installed |
-| Gazebo/MuJoCo/Isaac full digital twin correlation | Sim smoke is joint-space filter, not physics twin |
+| `colcon build` always green on main (optional workflow path-filtered) | See `ros-optional.yml`; may need rosdep tweaks on runners |
+| PlatformIO compile always green on main | See `firmware-optional.yml`; board packages heavy |
+| Gazebo/MuJoCo/Isaac **validated** digital twin correlation | MJCF export is scaffold; not measured-inertia twin |
 | Trained imitation policy on Robotrola hardware | Gap 5 — collect data first |
 | Battery pack thermal envelope under load | Gap 6 — start with bench PSU |
 

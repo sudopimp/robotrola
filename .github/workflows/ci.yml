@@ -20,3 +20,5 @@ jobs:
       - run: python scripts/demo_investor.py
       - run: python scripts/sim_smoke.py
       - run: python scripts/check_firmware.py
+      - run: python scripts/host_serial_demo.py
+      - run: python scripts/sim_mujoco_smoke.py

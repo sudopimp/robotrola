@@ -46,11 +46,17 @@ REQUIRED_PATHS = [
     "scripts/run_safety_path.py",
     "scripts/sim_smoke.py",
     "scripts/check_firmware.py",
+    "scripts/host_serial_demo.py",
+    "scripts/sim_mujoco_smoke.py",
+    "scripts/export_mujoco_model.py",
+    "robotrola/host_client.py",
     "ros2_ws/src/robotrola_control/scripts/joint_command_filter_node.py",
     "ros2_ws/src/robotrola_teleop/scripts/keyboard_teleop_node.py",
     "ros2_ws/src/robotrola_perception/scripts/camera_config_node.py",
     "ros2_ws/src/robotrola_msgs/msg/JointCommand.msg",
     "ros2_ws/src/robotrola_msgs/msg/CommandResult.msg",
+    ".github/workflows/firmware-optional.yml",
+    ".github/workflows/ros-optional.yml",
 ]
 
 

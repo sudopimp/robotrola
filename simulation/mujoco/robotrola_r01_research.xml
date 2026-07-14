@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Robotrola R-01 research MJCF scaffold. Inertias/estimated; not measured hardware. Not a validated digital twin. -->
+<mujoco model="robotrola_r01_research">
+  <compiler angle="radian" autolimits="true" />
+  <option timestep="0.002" gravity="0 0 -9.81" />
+  <default>
+    <joint damping="0.5" armature="0.01" limited="true" />
+    <geom type="capsule" size="0.03" rgba="0.8 0.7 0.5 1" />
+  </default>
+  <worldbody>
+    <geom name="floor" type="plane" size="2 2 0.1" rgba="0.2 0.2 0.2 1" />
+    <body name="pelvis_link" pos="0 0 0.95">
+      <geom name="pelvis_geom" type="box" size="0.12 0.1 0.06" />
+      <inertial mass="8" pos="0 0 0" diaginertia="0.08 0.06 0.05" />
+      <body name="waist_link" pos="0 0 0.08">
+        <geom name="waist_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+        <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+        <joint name="waist_yaw" type="hinge" axis="0 0 1" range="-0.6 0.6" />
+        <body name="torso_link" pos="0 0 0.12">
+          <geom name="torso_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+          <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+          <joint name="waist_pitch" type="hinge" axis="0 1 0" range="-0.35 0.45" />
+          <body name="torso_roll_link" pos="0 0 0.05">
+            <geom name="torso_roll_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+            <joint name="waist_roll" type="hinge" axis="1 0 0" range="-0.3 0.3" />
+            <body name="neck_yaw_link" pos="0 0 0.28">
+              <geom name="neck_yaw_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+              <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+              <joint name="neck_yaw" type="hinge" axis="0 0 1" range="-0.9 0.9" />
+              <body name="neck_pitch_link" pos="0 0 0.04">
+                <geom name="neck_pitch_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                <joint name="neck_pitch" type="hinge" axis="0 1 0" range="-0.5 0.6" />
+                <body name="head_link" pos="0 0 0.06">
+                  <geom name="head_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                  <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                  <joint name="neck_roll" type="hinge" axis="1 0 0" range="-0.35 0.35" />
+                </body>
+              </body>
+            </body>
+            <body name="left_shoulder_pitch_link" pos="0.18 0 0.22">
+              <geom name="left_shoulder_pitch_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+              <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+              <joint name="left_shoulder_pitch" type="hinge" axis="0 1 0" range="-1.4 1.4" />
+              <body name="left_shoulder_roll_link" pos="0 0 0">
+                <geom name="left_shoulder_roll_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                <joint name="left_shoulder_roll" type="hinge" axis="1 0 0" range="-0.3 1.5" />
+                <body name="left_upper_arm_link" pos="0 0 -0.05">
+                  <geom name="left_upper_arm_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                  <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                  <joint name="left_shoulder_yaw" type="hinge" axis="0 0 1" range="-1.2 1.2" />
+                  <body name="left_forearm_link" pos="0 0 -0.22">
+                    <geom name="left_forearm_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                    <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                    <joint name="left_elbow" type="hinge" axis="0 1 0" range="0.0 2.2" />
+                    <body name="left_wrist_yaw_link" pos="0 0 -0.2">
+                      <geom name="left_wrist_yaw_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                      <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                      <joint name="left_wrist_yaw" type="hinge" axis="0 0 1" range="-1.4 1.4" />
+                      <body name="left_wrist_pitch_link" pos="0 0 0">
+                        <geom name="left_wrist_pitch_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                        <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                        <joint name="left_wrist_pitch" type="hinge" axis="0 1 0" range="-0.9 0.9" />
+                        <body name="left_hand_link" pos="0 0 0">
+                          <geom name="left_hand_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                          <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                          <joint name="left_wrist_roll" type="hinge" axis="1 0 0" range="-0.9 0.9" />
+                          <body name="left_thumb_link" pos="-0.04 0.03 0.02">
+                            <geom name="left_thumb_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="left_thumb_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                          <body name="left_index_link" pos="-0.02 0.03 0.02">
+                            <geom name="left_index_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="left_index_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                          <body name="left_middle_link" pos="0.0 0.03 0.02">
+                            <geom name="left_middle_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="left_middle_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                          <body name="left_ring_link" pos="0.02 0.03 0.02">
+                            <geom name="left_ring_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="left_ring_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                          <body name="left_pinky_link" pos="0.04 0.03 0.02">
+                            <geom name="left_pinky_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="left_pinky_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <body name="right_shoulder_pitch_link" pos="-0.18 0 0.22">
+              <geom name="right_shoulder_pitch_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+              <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+              <joint name="right_shoulder_pitch" type="hinge" axis="0 1 0" range="-1.4 1.4" />
+              <body name="right_shoulder_roll_link" pos="0 0 0">
+                <geom name="right_shoulder_roll_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                <joint name="right_shoulder_roll" type="hinge" axis="1 0 0" range="-1.5 0.3" />
+                <body name="right_upper_arm_link" pos="0 0 -0.05">
+                  <geom name="right_upper_arm_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                  <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                  <joint name="right_shoulder_yaw" type="hinge" axis="0 0 1" range="-1.2 1.2" />
+                  <body name="right_forearm_link" pos="0 0 -0.22">
+                    <geom name="right_forearm_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                    <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                    <joint name="right_elbow" type="hinge" axis="0 1 0" range="0.0 2.2" />
+                    <body name="right_wrist_yaw_link" pos="0 0 -0.2">
+                      <geom name="right_wrist_yaw_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                      <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                      <joint name="right_wrist_yaw" type="hinge" axis="0 0 1" range="-1.4 1.4" />
+                      <body name="right_wrist_pitch_link" pos="0 0 0">
+                        <geom name="right_wrist_pitch_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                        <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                        <joint name="right_wrist_pitch" type="hinge" axis="0 1 0" range="-0.9 0.9" />
+                        <body name="right_hand_link" pos="0 0 0">
+                          <geom name="right_hand_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                          <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                          <joint name="right_wrist_roll" type="hinge" axis="1 0 0" range="-0.9 0.9" />
+                          <body name="right_thumb_link" pos="-0.04 0.03 0.02">
+                            <geom name="right_thumb_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="right_thumb_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                          <body name="right_index_link" pos="-0.02 0.03 0.02">
+                            <geom name="right_index_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="right_index_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                          <body name="right_middle_link" pos="0.0 0.03 0.02">
+                            <geom name="right_middle_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="right_middle_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                          <body name="right_ring_link" pos="0.02 0.03 0.02">
+                            <geom name="right_ring_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="right_ring_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                          <body name="right_pinky_link" pos="0.04 0.03 0.02">
+                            <geom name="right_pinky_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                            <joint name="right_pinky_curl" type="hinge" axis="0 1 0" range="0.0 1.4" />
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="left_hip_yaw_link" pos="0 0.1 -0.05">
+        <geom name="left_hip_yaw_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+        <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+        <joint name="left_hip_yaw" type="hinge" axis="0 0 1" range="-0.6 0.6" />
+        <body name="left_hip_roll_link" pos="0 0 0">
+          <geom name="left_hip_roll_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+          <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+          <joint name="left_hip_roll" type="hinge" axis="1 0 0" range="-0.4 0.4" />
+          <body name="left_thigh_link" pos="0 0 0">
+            <geom name="left_thigh_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+            <joint name="left_hip_pitch" type="hinge" axis="0 1 0" range="-1.4 0.8" />
+            <body name="left_shin_link" pos="0 0 -0.35">
+              <geom name="left_shin_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+              <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+              <joint name="left_knee" type="hinge" axis="0 1 0" range="0.0 2.2" />
+              <body name="left_ankle_pitch_link" pos="0 0 -0.35">
+                <geom name="left_ankle_pitch_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                <joint name="left_ankle_pitch" type="hinge" axis="0 1 0" range="-0.7 0.7" />
+                <body name="left_foot_link" pos="0 0 0">
+                  <geom name="left_foot_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                  <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                  <joint name="left_ankle_roll" type="hinge" axis="1 0 0" range="-0.4 0.4" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="right_hip_yaw_link" pos="0 -0.1 -0.05">
+        <geom name="right_hip_yaw_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+        <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+        <joint name="right_hip_yaw" type="hinge" axis="0 0 1" range="-0.6 0.6" />
+        <body name="right_hip_roll_link" pos="0 0 0">
+          <geom name="right_hip_roll_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+          <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+          <joint name="right_hip_roll" type="hinge" axis="1 0 0" range="-0.4 0.4" />
+          <body name="right_thigh_link" pos="0 0 0">
+            <geom name="right_thigh_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+            <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+            <joint name="right_hip_pitch" type="hinge" axis="0 1 0" range="-1.4 0.8" />
+            <body name="right_shin_link" pos="0 0 -0.35">
+              <geom name="right_shin_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+              <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+              <joint name="right_knee" type="hinge" axis="0 1 0" range="0.0 2.2" />
+              <body name="right_ankle_pitch_link" pos="0 0 -0.35">
+                <geom name="right_ankle_pitch_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                <joint name="right_ankle_pitch" type="hinge" axis="0 1 0" range="-0.7 0.7" />
+                <body name="right_foot_link" pos="0 0 0">
+                  <geom name="right_foot_link_geom" type="capsule" fromto="0 0 0 0 0 -0.08" size="0.025" />
+                  <inertial mass="0.5" pos="0 0 -0.04" diaginertia="0.002 0.002 0.001" />
+                  <joint name="right_ankle_roll" type="hinge" axis="1 0 0" range="-0.4 0.4" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <position name="act_waist_yaw" joint="waist_yaw" kp="20" ctrlrange="-0.6 0.6" />
+    <position name="act_waist_pitch" joint="waist_pitch" kp="20" ctrlrange="-0.35 0.45" />
+    <position name="act_waist_roll" joint="waist_roll" kp="20" ctrlrange="-0.3 0.3" />
+    <position name="act_neck_yaw" joint="neck_yaw" kp="20" ctrlrange="-0.9 0.9" />
+    <position name="act_neck_pitch" joint="neck_pitch" kp="20" ctrlrange="-0.5 0.6" />
+    <position name="act_neck_roll" joint="neck_roll" kp="20" ctrlrange="-0.35 0.35" />
+    <position name="act_left_shoulder_pitch" joint="left_shoulder_pitch" kp="20" ctrlrange="-1.4 1.4" />
+    <position name="act_left_shoulder_roll" joint="left_shoulder_roll" kp="20" ctrlrange="-0.3 1.5" />
+    <position name="act_left_shoulder_yaw" joint="left_shoulder_yaw" kp="20" ctrlrange="-1.2 1.2" />
+    <position name="act_left_elbow" joint="left_elbow" kp="20" ctrlrange="0.0 2.2" />
+    <position name="act_left_wrist_yaw" joint="left_wrist_yaw" kp="20" ctrlrange="-1.4 1.4" />
+    <position name="act_left_wrist_pitch" joint="left_wrist_pitch" kp="20" ctrlrange="-0.9 0.9" />
+  </actuator>
+  <size nconmax="200" njmax="500" />
+</mujoco>

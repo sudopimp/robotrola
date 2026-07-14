@@ -17,12 +17,13 @@
 - [x] LeRobot JSON scaffold + v3-**layout** export (`lerobot/v3_layout.py`)
 - [x] Completeness tests + `validate_repo` + CI (pytest, sim_smoke, firmware check)
 
-## Phase 0.5 — Software hardening (next)
-- [ ] Optional CI job: `colcon build` on ROS 2 Jazzy container
-- [ ] Optional CI: PlatformIO compile (`make firmware-build`)
-- [ ] MuJoCo or Gazebo model load + single-joint physics smoke
+## Phase 0.5 — Software hardening ✅ (software path)
+- [x] Optional CI workflows: `colcon` (ros-optional) + PlatformIO (firmware-optional)
+- [x] MuJoCo MJCF research export + smoke (export always; load if mujoco installed)
+- [x] Host serial clients (sim default; `--safety-port` / `--bridge-port` for USB)
 - [ ] Official `lerobot` package adapter + Hub push docs
-- [ ] Host USB serial client against real MCU (protocol already mirrored)
+- [ ] Run host client against **real** flashed MCU on bench (needs hardware)
+- [ ] MuJoCo pip in CI + `mj_step` asserted (optional)
 
 ## Phase 1 — Bench prototype (physical)
 - [ ] Print non-load-bearing reference parts

@@ -195,13 +195,16 @@ python scripts/bom_cost_model.py
 
 ```bash
 pip install -e ".[dev]"
-make diligence          # pytest + validate + BOM + safety + demo + sim_smoke + firmware
-make phase0             # shorter Phase-0+ bar
+make diligence          # full software bar (incl. host clients + MuJoCo export)
+make phase0             # Phase-0+ core bar
+make phase05            # + host serial clients + MuJoCo MJCF export
 ```
 
 ```bash
-python scripts/sim_smoke.py       # SIM_SMOKE_OK
-python scripts/check_firmware.py  # FIRMWARE_CHECK_OK
+python scripts/sim_smoke.py         # SIM_SMOKE_OK
+python scripts/check_firmware.py    # FIRMWARE_CHECK_OK
+python scripts/host_serial_demo.py  # HOST_CLIENTS_OK (sim; pass --safety-port for USB)
+python scripts/sim_mujoco_smoke.py  # MUJOCO_SMOKE_OK
 ```
 
 ### ROS 2 (optional)

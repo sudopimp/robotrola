@@ -22,7 +22,11 @@ Optional high-fidelity digital twin and synthetic data. See `simulation/isaac/`.
 
 ## MuJoCo
 
-Future dynamics calibration path — `simulation/mujoco/`.
+Research MJCF export ships under `simulation/mujoco/robotrola_r01_research.xml`.
+
+```bash
+python scripts/sim_mujoco_smoke.py   # MUJOCO_SMOKE_OK (export; load if mujoco installed)
+```
 
 ## Digital twin checklist (lab)
 

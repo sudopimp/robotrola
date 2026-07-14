@@ -1,0 +1,31 @@
+name: firmware-optional
+# Compiles PlatformIO packages when pio is available; does not fail the
+# default CI if this job is skipped. Manual + push on firmware/** paths.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "firmware/**"
+      - "scripts/check_firmware.py"
+      - ".github/workflows/firmware-optional.yml"
+  pull_request:
+    paths:
+      - "firmware/**"
+jobs:
+  platformio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install PlatformIO
+        run: pip install -U platformio
+      - name: Structure check
+        run: python scripts/check_firmware.py
+      - name: Build safety MCU
+        run: pio run
+        working-directory: firmware/esp32_safety_mcu
+      - name: Build motor bridge
+        run: pio run -e stm32_bridge || pio run
+        working-directory: firmware/stm32_dynamixel_bridge

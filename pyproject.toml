@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "robotrola-core"
-version = "0.4.0"
-description = "Robotrola Phase-0+ open research humanoid: 42-DOF, safety filter, sim smoke, firmware gates, ROS nodes, LeRobot v3-layout"
+version = "0.4.1"
+description = "Robotrola Phase-0.5 open research humanoid: joint filter, ROS nodes, host serial clients, MuJoCo MJCF export, LeRobot v3-layout"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0 AND CERN-OHL-S-2.0"
