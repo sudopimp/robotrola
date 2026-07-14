@@ -1,5 +1,6 @@
 name: ros-optional
 # colcon build on ROS 2 Jazzy — messages + ament packages.
+# Note: do not use `set -u` when sourcing /opt/ros/*/setup.bash (unbound AMENT_* vars).
 on:
   workflow_dispatch:
   push:
@@ -21,7 +22,7 @@ jobs:
       - name: Install build tools
         shell: bash
         run: |
-          set -euo pipefail
+          set -eo pipefail
           source /opt/ros/jazzy/setup.bash
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -32,7 +33,7 @@ jobs:
       - name: colcon build
         shell: bash
         run: |
-          set -euo pipefail
+          set -eo pipefail
           source /opt/ros/jazzy/setup.bash
           cd ros2_ws
           rosdep update || true
@@ -41,7 +42,7 @@ jobs:
       - name: List robotrola packages
         shell: bash
         run: |
-          set -euo pipefail
+          set -eo pipefail
           source /opt/ros/jazzy/setup.bash
           source ros2_ws/install/setup.bash
           ros2 pkg list | grep robotrola
