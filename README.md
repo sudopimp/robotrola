@@ -204,7 +204,16 @@ make phase05            # + host serial clients + MuJoCo MJCF export
 python scripts/sim_smoke.py         # SIM_SMOKE_OK
 python scripts/check_firmware.py    # FIRMWARE_CHECK_OK
 python scripts/host_serial_demo.py  # HOST_CLIENTS_OK (sim; pass --safety-port for USB)
-python scripts/sim_mujoco_smoke.py  # MUJOCO_SMOKE_OK
+python scripts/sim_mujoco_smoke.py      # MUJOCO_SMOKE_OK (+ MUJOCO_STEP_OK if mujoco installed)
+python scripts/record_lerobot_episode.py  # LEROBOT_PATH_OK (local only; no Hub upload)
+```
+
+Optional extras:
+
+```bash
+pip install -e ".[mujoco]"     # real mj_step in sim_mujoco_smoke
+pip install -e ".[lerobot]"    # heavy HF stack; bridge detects package
+pip install -e ".[serial]"     # pyserial for USB host clients
 ```
 
 ### ROS 2 (optional)

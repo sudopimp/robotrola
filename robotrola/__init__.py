@@ -1,12 +1,11 @@
-"""Robotrola Core — complete open research platform helpers."""
-__version__ = "0.4.1"
+"""Robotrola Core — complete open research platform helpers.
 
-from robotrola.safety import SafetySupervisor, SafetyInputs, JointCommand, SafetyMode
-from robotrola.command_path import Platform, demo_safe_path
-from robotrola.description import revolute_joints, assert_full_humanoid
-from robotrola.protocol_sim import SafetyMcuSim, MotorBridgeSim
-from robotrola.cost_model import full_cost_model
-from robotrola.joint_filter import JointCommandFilter
+Heavy imports are lazy so lightweight modules (e.g. ``host_serial``) can load
+without optional stack deps during firmware structure checks.
+"""
+from __future__ import annotations
+
+__version__ = "0.4.2"  # maximize-software: lerobot bridge, mujoco step, optional CI fixes
 
 __all__ = [
     "SafetySupervisor",
@@ -23,3 +22,36 @@ __all__ = [
     "JointCommandFilter",
     "__version__",
 ]
+
+
+def __getattr__(name: str):
+    if name in {
+        "SafetySupervisor",
+        "SafetyInputs",
+        "JointCommand",
+        "SafetyMode",
+    }:
+        from robotrola import safety as m
+
+        return getattr(m, name)
+    if name in {"Platform", "demo_safe_path"}:
+        from robotrola import command_path as m
+
+        return getattr(m, name)
+    if name in {"revolute_joints", "assert_full_humanoid"}:
+        from robotrola import description as m
+
+        return getattr(m, name)
+    if name in {"SafetyMcuSim", "MotorBridgeSim"}:
+        from robotrola import protocol_sim as m
+
+        return getattr(m, name)
+    if name == "full_cost_model":
+        from robotrola.cost_model import full_cost_model
+
+        return full_cost_model
+    if name == "JointCommandFilter":
+        from robotrola.joint_filter import JointCommandFilter
+
+        return JointCommandFilter
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

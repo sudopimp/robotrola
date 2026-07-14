@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "robotrola-core"
-version = "0.4.1"
-description = "Robotrola Phase-0.5 open research humanoid: joint filter, ROS nodes, host serial clients, MuJoCo MJCF export, LeRobot v3-layout"
+version = "0.4.2"
+description = "Robotrola open research humanoid: joint filter, ROS nodes, host clients, MuJoCo step, LeRobot-oriented export"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0 AND CERN-OHL-S-2.0"
@@ -16,6 +16,11 @@ dependencies = ["pyyaml>=6", "numpy>=1.23"]
 [project.optional-dependencies]
 dev = ["pytest>=7", "ruff>=0.5"]
 cad = ["trimesh>=4", "pillow>=10"]
+mujoco = ["mujoco>=3.1"]
+# Official Hugging Face lerobot is heavy (torch). Pin loosely; install only when needed.
+lerobot = ["lerobot>=0.4.0,<0.7"]
+serial = ["pyserial>=3.5"]
+all = ["robotrola-core[dev,cad,mujoco,serial]"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,0 +1,35 @@
+name: mujoco-optional
+# Prove MJCF load + mj_step when mujoco pip package is available.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "simulation/mujoco/**"
+      - "scripts/export_mujoco_model.py"
+      - "scripts/sim_mujoco_smoke.py"
+      - "scripts/generate_robot_description.py"
+      - ".github/workflows/mujoco-optional.yml"
+  pull_request:
+    paths:
+      - "simulation/mujoco/**"
+      - "scripts/export_mujoco_model.py"
+      - "scripts/sim_mujoco_smoke.py"
+      - ".github/workflows/mujoco-optional.yml"
+
+jobs:
+  mujoco-step:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install package + mujoco
+        run: |
+          python -m pip install -U pip
+          pip install -e ".[dev,mujoco]"
+      - name: Export + mj_step
+        run: |
+          python scripts/sim_mujoco_smoke.py | tee mujoco_out.txt
+          grep -q MUJOCO_SMOKE_OK mujoco_out.txt
+          grep -q MUJOCO_STEP_OK mujoco_out.txt

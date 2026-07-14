@@ -24,6 +24,9 @@ This is **not** a claim of a certified consumer product or factory SKU.
 | C12 | **Sim smoke** joint trajectory under safety filter | `python scripts/sim_smoke.py` → `SIM_SMOKE_OK` |
 | C13 | **Firmware check** structure + protocol tokens | `python scripts/check_firmware.py` → `FIRMWARE_CHECK_OK` |
 | C14 | **v3-layout export** refuses non-ACTIVE; writes meta/info.json + data jsonl | `lerobot/v3_layout.py` + phase0 tests |
+| C15 | **Official adapter path** records via filter; hub_upload=not_performed; script LEROBOT_PATH_OK | `scripts/record_lerobot_episode.py`, `tests/test_maximize_software.py` |
+| C16 | **MuJoCo** export always; mj_step when mujoco installed (STEP_OK or STEP_SKIP) | `scripts/sim_mujoco_smoke.py` |
+| C17 | **Optional CI** firmware installs pyyaml/package; msgs has rosidl_interface_packages; mujoco-optional asserts STEP_OK | workflow YAML + package.xml |
 
 ## Non-goals
 

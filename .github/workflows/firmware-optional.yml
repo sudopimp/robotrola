@@ -1,16 +1,21 @@
 name: firmware-optional
-# Compiles PlatformIO packages when pio is available; does not fail the
-# default CI if this job is skipped. Manual + push on firmware/** paths.
+# PlatformIO compile for safety MCU + motor bridge.
+# Path-filtered; structure check needs pyyaml (robotrola package).
 on:
   workflow_dispatch:
   push:
     paths:
       - "firmware/**"
       - "scripts/check_firmware.py"
+      - "robotrola/host_serial.py"
+      - "robotrola/__init__.py"
       - ".github/workflows/firmware-optional.yml"
   pull_request:
     paths:
       - "firmware/**"
+      - "scripts/check_firmware.py"
+      - ".github/workflows/firmware-optional.yml"
+
 jobs:
   platformio:
     runs-on: ubuntu-latest
@@ -19,13 +24,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install PlatformIO
-        run: pip install -U platformio
+      - name: Install Python deps + PlatformIO
+        run: |
+          python -m pip install -U pip
+          pip install pyyaml numpy platformio
+          pip install -e .
       - name: Structure check
         run: python scripts/check_firmware.py
-      - name: Build safety MCU
+      - name: Build safety MCU (ESP32-S3)
         run: pio run
         working-directory: firmware/esp32_safety_mcu
-      - name: Build motor bridge
-        run: pio run -e stm32_bridge || pio run
+      - name: Build motor bridge (HOST_SIM, DXL_HARDWARE=0)
+        run: pio run -e stm32_bridge
         working-directory: firmware/stm32_dynamixel_bridge

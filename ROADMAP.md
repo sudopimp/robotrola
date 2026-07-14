@@ -18,12 +18,11 @@
 - [x] Completeness tests + `validate_repo` + CI (pytest, sim_smoke, firmware check)
 
 ## Phase 0.5 — Software hardening ✅ (software path)
-- [x] Optional CI workflows: `colcon` (ros-optional) + PlatformIO (firmware-optional)
-- [x] MuJoCo MJCF research export + smoke (export always; load if mujoco installed)
+- [x] Optional CI workflows: `colcon` (ros-optional) + PlatformIO (firmware-optional) + MuJoCo step
+- [x] MuJoCo MJCF export + `mj_step` when `pip install -e ".[mujoco]"` (CI optional job)
 - [x] Host serial clients (sim default; `--safety-port` / `--bridge-port` for USB)
-- [ ] Official `lerobot` package adapter + Hub push docs
+- [x] Official/local LeRobot bridge + Hub operator docs (`lerobot/official_adapter.py`)
 - [ ] Run host client against **real** flashed MCU on bench (needs hardware)
-- [ ] MuJoCo pip in CI + `mj_step` asserted (optional)
 
 ## Phase 1 — Bench prototype (physical)
 - [ ] Print non-load-bearing reference parts

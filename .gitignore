@@ -51,3 +51,7 @@ episodes/
 # Local CAD caches
 *.tmp
 .cache/
+
+# Generated demo datasets
+artifacts/
+

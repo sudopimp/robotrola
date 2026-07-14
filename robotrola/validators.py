@@ -49,7 +49,10 @@ REQUIRED_PATHS = [
     "scripts/host_serial_demo.py",
     "scripts/sim_mujoco_smoke.py",
     "scripts/export_mujoco_model.py",
+    "scripts/record_lerobot_episode.py",
     "robotrola/host_client.py",
+    "lerobot/official_adapter.py",
+    "lerobot/v3_layout.py",
     "ros2_ws/src/robotrola_control/scripts/joint_command_filter_node.py",
     "ros2_ws/src/robotrola_teleop/scripts/keyboard_teleop_node.py",
     "ros2_ws/src/robotrola_perception/scripts/camera_config_node.py",
@@ -57,6 +60,7 @@ REQUIRED_PATHS = [
     "ros2_ws/src/robotrola_msgs/msg/CommandResult.msg",
     ".github/workflows/firmware-optional.yml",
     ".github/workflows/ros-optional.yml",
+    ".github/workflows/mujoco-optional.yml",
 ]
 
 
@@ -166,6 +170,12 @@ def validate_repo(root: str | Path = ".") -> list[str]:
         px = root / pkg_xml
         if px.is_file() and "stub" in px.read_text(encoding="utf-8").lower():
             errors.append(f"ros_package_still_stub:{pkg_xml}")
+
+    msgs_xml = root / "ros2_ws/src/robotrola_msgs/package.xml"
+    if msgs_xml.is_file():
+        mx = msgs_xml.read_text(encoding="utf-8")
+        if "rosidl_interface_packages" not in mx:
+            errors.append("robotrola_msgs_missing_rosidl_interface_group")
 
     bridge = root / "firmware/stm32_dynamixel_bridge/src/main.cpp"
     if bridge.exists():
